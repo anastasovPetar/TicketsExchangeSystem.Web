@@ -15,4 +15,11 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.15" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TicketsEchangeSystem.Common\TicketsEchangeSystem.Common.csproj" />
+    <ProjectReference Include="..\TicketsExchangeSystem.Data.Models\TicketsExchangeSystem.Data.Models.csproj" />
+    <ProjectReference Include="..\TicketsExchangeSystem.Data\TicketsExchangeSystem.Data.csproj" />
+    <ProjectReference Include="..\TicketsExchangeSystem.Web.ViewModels\TicketsExchangeSystem.Web.ViewModels.csproj" />
+  </ItemGroup>
+
 </Project>

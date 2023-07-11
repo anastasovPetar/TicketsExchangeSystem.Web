@@ -1,16 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-using TicketsExchangeSystem.Web.Models;
-
-namespace TicketsExchangeSystem.Web.Controllers
+﻿namespace TicketsExchangeSystem.Web.Controllers
 {
+    using Microsoft.AspNetCore.Mvc;
+    using System.Diagnostics;
+
+    using ViewModels.Home;
+
+
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        
+        public HomeController()
         {
-            _logger = logger;
+           
         }
 
         public IActionResult Index()

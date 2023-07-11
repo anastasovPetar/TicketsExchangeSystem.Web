@@ -1,4 +1,4 @@
-namespace TicketsExchangeSystem.Web.Models
+namespace TicketsExchangeSystem.Web.ViewModels.Home
 {
     public class ErrorViewModel
     {
