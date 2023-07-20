@@ -12,5 +12,14 @@
             : base(options)
         {
         }
+
+        public DbSet<Ticket> Tickets { get; set; } = null!;
+
+        public DbSet<Currency> Currencies { get; set; } = null!;
+
+        public DbSet<Seller> Sellers { get; set; } = null!;
+
+        public DbSet<Status> Statuses { get; set; } = null!;
+
     }
 }
