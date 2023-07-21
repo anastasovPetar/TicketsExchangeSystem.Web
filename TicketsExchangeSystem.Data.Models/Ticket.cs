@@ -15,10 +15,6 @@
         public Guid Id { get; set; }
 
 
-        public Guid SellerId { get; set; }
-        public virtual Seller Seller { get; set; } = null!;
-
-
         [Required]
         [MaxLength(TitleMaxLength)]
         public string Title { get; set; } = null!;
@@ -53,7 +49,7 @@
         public int Quantity { get; set; }
 
         [Required]
-        public decimal PricePerTicket { get; set; }             
+        public decimal PricePerTicket { get; set; }   
 
         [Required]
         public DateTime EventDate { get; set; }
@@ -64,12 +60,19 @@
 
 
 
+        public Guid SellerId { get; set; }
+        public virtual Seller Seller { get; set; } = null!;
+
+
         public int CurrencyId { get; set; }
         public virtual Currency Currency { get; set; } = null!;
 
 
         public int CategoryId { get; set; }
         public virtual Category Category { get; set; } = null!;
+
+        public Guid OrderId { get; set; }
+        public virtual Order Order { get; set; } = null!;
 
     }
 }

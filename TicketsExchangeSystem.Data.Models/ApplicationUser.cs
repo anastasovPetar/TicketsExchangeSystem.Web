@@ -6,9 +6,10 @@ namespace TicketsExchangeSystem.Data.Models
     {
         public ApplicationUser()
         {
-            this.PurchasedTickets = new HashSet<Ticket>();
+            Id = Guid.NewGuid();
+            this.OrderedTickets = new HashSet<Order>();
         }
-        public virtual ICollection<Ticket> PurchasedTickets { get; set; }
+        public virtual ICollection<Order> OrderedTickets { get; set; }
 
     }
 }

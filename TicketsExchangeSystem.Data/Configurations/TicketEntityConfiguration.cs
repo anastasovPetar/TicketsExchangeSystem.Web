@@ -34,6 +34,12 @@
                 .HasForeignKey (t => t.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            builder
+                .HasOne(t => t.Order)
+                .WithMany(o => o.OrderedTickets)
+                .HasForeignKey(t => t.OrderId)
+                .OnDelete (DeleteBehavior.Restrict);
+
             //builder.HasData(this.GenerateTickets());
         }
 
