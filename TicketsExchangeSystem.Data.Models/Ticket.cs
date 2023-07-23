@@ -75,7 +75,7 @@
         public int CategoryId { get; set; }
         public virtual Category Category { get; set; } = null!;
 
-        public Guid OrderId { get; set; }
+        public Guid? OrderId { get; set; }
         public virtual Order? Order { get; set; } 
 
     }

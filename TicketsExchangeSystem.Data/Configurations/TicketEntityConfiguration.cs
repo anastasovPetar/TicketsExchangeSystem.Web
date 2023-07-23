@@ -60,7 +60,7 @@
                 EventDate = DateTime.UtcNow,
                 CreatedOn = DateTime.UtcNow.AddDays(-1),
                 isActive = true,
-                SellerId = Guid.Parse("A061BA74-B8BE-4802-AC71-A5A7FA839815"),
+                SellerId = Guid.Parse("A061BA74-B8BE-4802-AC71-A5A7FA839815"), //SellerID
                 CurrencyId = 1,
                 CategoryId = 2
             };
