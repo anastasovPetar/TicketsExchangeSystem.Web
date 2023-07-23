@@ -23,5 +23,7 @@ namespace TicketsExchangeSystem.Data.Models
         public virtual ApplicationUser User { get; set; } = null!;
 
         public virtual ICollection<Ticket> OwnTickets { get; set; }
+
+        public DateTime AgreementDate { get; set; }
     }
 }
