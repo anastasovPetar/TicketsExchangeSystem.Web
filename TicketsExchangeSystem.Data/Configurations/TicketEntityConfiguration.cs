@@ -40,7 +40,7 @@
                 .HasForeignKey(t => t.OrderId)
                 .OnDelete (DeleteBehavior.Restrict);
 
-            //builder.HasData(this.GenerateTickets());
+            builder.HasData(this.GenerateTickets());
         }
 
         private Ticket[] GenerateTickets() 
@@ -49,8 +49,7 @@
             Ticket ticket;
 
             ticket = new Ticket()
-            {
-                SellerId =  Guid.Parse("9c81219d-35c0-4087-9a97-6bf09134c2a3"),
+            {                
                 Title = "Concert 1",
                 Country = "Bulgaria",
                 City = "Sofia",
@@ -58,7 +57,48 @@
                 ImageUrl = "https://picsum.photos/id/117/600/400",
                 Quantity = 5,
                 PricePerTicket = 30.00m,
-                EventDate = DateTime.UtcNow
+                EventDate = DateTime.UtcNow,
+                CreatedOn = DateTime.UtcNow.AddDays(-1),
+                isActive = true,
+                SellerId = Guid.Parse("A061BA74-B8BE-4802-AC71-A5A7FA839815"),
+                CurrencyId = 1,
+                CategoryId = 2
+            };
+            tickets.Add(ticket);
+
+            ticket = new Ticket()
+            {
+                Title = "Concert 2",
+                Country = "Bulgaria",
+                City = "Sofia",
+                PlaceOfEvent = "Stadium Junak",
+                ImageUrl = "https://picsum.photos/id/117/600/400",
+                Quantity = 2,
+                PricePerTicket = 20.00m,
+                EventDate = DateTime.UtcNow,
+                CreatedOn = DateTime.UtcNow,
+                isActive = true,
+                SellerId = Guid.Parse("A061BA74-B8BE-4802-AC71-A5A7FA839815"),
+                CurrencyId = 1,
+                CategoryId = 2
+            };
+            tickets.Add(ticket);
+
+            ticket = new Ticket()
+            {
+                Title = "ORPHEUS",
+                Country = "Bulgaria",
+                City = "Sofia",
+                PlaceOfEvent = "National Theatre Ivan Vazov",
+                ImageUrl = "https://picsum.photos/id/117/600/400",
+                Quantity = 2,
+                PricePerTicket = 25.00m,
+                EventDate = DateTime.UtcNow.AddDays(2),
+                CreatedOn = DateTime.UtcNow,
+                isActive = true,
+                SellerId = Guid.Parse("A061BA74-B8BE-4802-AC71-A5A7FA839815"),
+                CurrencyId = 1,
+                CategoryId = 4
             };
             tickets.Add(ticket);
 

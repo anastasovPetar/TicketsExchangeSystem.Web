@@ -29,6 +29,7 @@
 
         [Required]
         [MaxLength(PlaceOfEventMaxLength)]
+        [DisplayName("Place")]
         public string PlaceOfEvent { get; set; } = null!;
 
 
@@ -57,10 +58,6 @@
         public DateTime CreatedOn { get; set; }
 
         public bool isActive { get; set; }
-
-        //public Guid UserId { get; set; }
-        //public virtual ApplicationUser? MyProperty { get; set; }
-
 
 
         public Guid SellerId { get; set; }

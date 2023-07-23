@@ -1,5 +1,4 @@
-﻿
-namespace TicketsExchangeSystem.Data.Models
+﻿namespace TicketsExchangeSystem.Data.Models
 {
     using System.ComponentModel.DataAnnotations;
 

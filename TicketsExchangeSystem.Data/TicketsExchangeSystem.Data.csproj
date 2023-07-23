@@ -20,8 +20,4 @@
     <ProjectReference Include="..\TicketsExchangeSystem.Data.Models\TicketsExchangeSystem.Data.Models.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Configurations\Migrations\" />
-  </ItemGroup>
-
 </Project>
