@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<TodayViewModel>;
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -15,7 +17,7 @@
 
 
 @*menu centerd *@
-<div class="container">
+@*<div class="container">
     <div class="row w-75 mx-auto mt-5 shadow rounded">
         <div class="col-12 bg-light py-3">
             <a class="stretched-link text-decoration-none text-body" asp-area="" asp-controller="Home" asp-action="Today">
@@ -54,11 +56,21 @@
             </a>
         </div>
     </div>
-</div>
+</div>*@
+@*menu centerd *@
+
 
 <div class="mb-5"></div>
 
-
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Sorry, there is no events today!</h5>
+            <p class="card-text">You can continue sercing for the best events</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+    </div>    
+</div>
 
 
 

@@ -6,7 +6,7 @@
     public class TicketController : Controller
     {
         [AllowAnonymous]
-        public IActionResult AllTickets()
+        public async Task<IActionResult> BecomeSeller()
         {
             return View();
         }

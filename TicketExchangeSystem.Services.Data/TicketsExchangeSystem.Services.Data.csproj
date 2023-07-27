@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TicketsEchangeSystem.Common\TicketsEchangeSystem.Common.csproj" />
+    <ProjectReference Include="..\TicketsExchangeSystem.Data.Models\TicketsExchangeSystem.Data.Models.csproj" />
+    <ProjectReference Include="..\TicketsExchangeSystem.Data\TicketsExchangeSystem.Data.csproj" />
+    <ProjectReference Include="..\TicketsExchangeSystem.Web.ViewModels\TicketsExchangeSystem.Web.ViewModels.csproj" />
+  </ItemGroup>
+
+</Project>

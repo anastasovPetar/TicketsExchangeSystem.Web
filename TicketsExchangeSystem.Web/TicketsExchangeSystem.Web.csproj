@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TicketExchangeSystem.Services.Data\TicketsExchangeSystem.Services.Data.csproj" />
     <ProjectReference Include="..\TicketsEchangeSystem.Common\TicketsEchangeSystem.Common.csproj" />
     <ProjectReference Include="..\TicketsExchangeSystem.Data.Models\TicketsExchangeSystem.Data.Models.csproj" />
     <ProjectReference Include="..\TicketsExchangeSystem.Data\TicketsExchangeSystem.Data.csproj" />

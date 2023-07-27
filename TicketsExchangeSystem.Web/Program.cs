@@ -4,6 +4,7 @@ namespace TicketsExchangeSystem.Web
 
     using Data;
     using Data.Models;
+    using TicketExchangeSystem.Services.Data.Interfaces;
 
     public class Program
     {
@@ -30,6 +31,8 @@ namespace TicketsExchangeSystem.Web
                 .AddEntityFrameworkStores<TicketsExchangedbContext>();
 
             builder.Services.AddControllersWithViews();
+
+            //builder.Services.AddScoped<ITicketService, ITicketService>();
 
             WebApplication app = builder.Build();
 
@@ -58,6 +61,7 @@ namespace TicketsExchangeSystem.Web
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.MapRazorPages();
+
 
             app.Run();
         }
