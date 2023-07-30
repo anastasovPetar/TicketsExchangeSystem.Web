@@ -1,0 +1,71 @@
+﻿@model IEnumerable<WeekendViewModel>;
+
+@{
+    ViewData["Title"] = "Weekened Events";
+    var tickets = Model.ToList();
+}
+
+<div class="mb-5"></div>
+<div class="container">
+    <div class="d-grid gap-2 text-center">
+        <div>
+            <h1 class="display-4 mt-4">The events you can attend.</h1>
+        </div>
+        <div>
+            <h4>Enjoy you weekend  <span><i class="bi bi-emoji-smile text-success"></i></span></h4>
+        </div>
+    </div>
+</div>
+<div class="mb-5"></div>
+
+@if (!tickets.Any())
+{
+    <div class="container">
+        <div class="card">
+            <div class="card-body position-relative">
+                <h5 class="card-title">Sorry, there are no events available this Weekend!</h5>
+                <p class="card-text">You can continue sercing for the best events</p>
+                <a class="streched-link text-decoration-none text-body btn btn-outline-success" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="bi bi-skip-backward"></i>
+                    Back
+                </a>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="container">
+    <div class="row ">
+
+        @foreach (var ticket in tickets)
+        {
+            <div class="mx-auto" style="width:20em; margin:10px;">
+                <div class="card text-dark border-success mb-3 rounded shadow">
+                    <div class="card-header">
+                        <img src=@ticket.ImageUrl class="card-img-top" alt="ticket scanned picture" />
+                    </div>
+                    <div class="card-body">
+                        <h4 class=" text-bold text-capitalize">@ticket.Title</h4>
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-geo-alt-fill me-2"></i>
+                            <p class="m-0"> <strong> Place: </strong>  @ticket.Country, @ticket.City, @ticket.PlaceOfEvent</p>
+                        </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-calendar-fill me-2"></i>
+                            <p class="m-0"> <strong> Date: </strong>  @ticket.EventDate.Date.ToShortDateString()</p>
+                        </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-clock-fill me-2"></i>
+                            <p class="m-0"> <strong> Start:  </strong>  @ticket.EventDate.ToShortTimeString()</p>
+                        </div>
+                    </div>
+                    <div class="card-footer text-light d-flex">
+                        <a  class=" btn btn-outline-success" asp-controller="Home" asp-action="Details" asp-route-id="">Details</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<p>total ticket(s): @tickets.Count() </p>

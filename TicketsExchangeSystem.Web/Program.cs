@@ -4,15 +4,16 @@ namespace TicketsExchangeSystem.Web
 
     using Data;
     using Data.Models;
-    using TicketExchangeSystem.Services.Data.Interfaces;
+    using TicketsExchangeSystem.Services.Data;
+    using TicketsExchangeSystem.Services.Data.Interfaces;
 
     public class Program
     {
         public static void Main(string[] args)
         {
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+           
 
-            
             string connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
             builder.Services
@@ -32,7 +33,8 @@ namespace TicketsExchangeSystem.Web
 
             builder.Services.AddControllersWithViews();
 
-            //builder.Services.AddScoped<ITicketService, ITicketService>();
+            builder.Services.AddScoped<ITicketService, TicketService>();
+            builder.Services.AddScoped<IDateService, DateService>();
 
             WebApplication app = builder.Build();
 
