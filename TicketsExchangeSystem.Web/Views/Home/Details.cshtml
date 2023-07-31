@@ -1,0 +1,27 @@
+﻿@model DetailsViewModel;
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="container">
+    <div class="d-grid gap-2 text-center">
+        <div>
+            <h1 class="display-4 mt-4">Details for the event</h1>
+        </div>
+        <div>
+            <h4>You can order your ticket here.</h4>
+        </div>
+    </div>
+</div>
+
+@*PRODUCT*@
+<div class="container py-5">
+    <img src=@Model.ImageUrl class="card-img-top" alt="ticket image">
+    <div class="card-body">
+        <h5 class="card-title">Card title</h5>
+        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+    </div>
+</div>
+</div>

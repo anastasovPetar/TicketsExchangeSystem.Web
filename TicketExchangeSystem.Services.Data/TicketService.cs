@@ -8,6 +8,7 @@
     using TicketsExchangeSystem.Data;
     using TicketsExchangeSystem.Web.ViewModels.Home;
     using System.Collections.Generic;
+    using TicketsExchangeSystem.Data.Models;
 
     public class TicketService : ITicketService
     {
@@ -26,7 +27,7 @@
         {
             IEnumerable<TodayViewModel> todayEvents = await this.dbContext
                 .Tickets
-                .Where(t => t.EventDate.Date == DateTime.UtcNow.Date)
+                .Where(t => t.EventDate.Date == DateTime.Now.Date)
 
                 .Select(t => new TodayViewModel()
                 {
@@ -46,7 +47,7 @@
 
         async Task<IEnumerable<WeekendViewModel>> ITicketService.GetWeekendEventsAsync()
         {
-            var startOfWeek = await dateService.GetFirstDayOfThisWeekAsync(DateTime.UtcNow.Date);
+            var startOfWeek = await dateService.GetFirstDayOfThisWeekAsync(DateTime.Now.Date);
             var thisSaturday = startOfWeek.AddDays(5).Date;
             var thisSunday = startOfWeek.AddDays(6).Date;
 
@@ -70,28 +71,63 @@
             return weekendEvents;
         }
 
-        public async Task<IEnumerable<DetailsViewModel>> GetByIdAsysnc(string ticketId)
+        public async Task<DetailsViewModel> GetDetailsByIdAsysnc(string ticketId)
         {
-            IEnumerable<DetailsViewModel> detailsModel = await this.dbContext
-                .Tickets
-                .Where(t => t.Id.ToString() == ticketId)
-                .Select(t => new DetailsViewModel()
-                {
-                    Id = t.Id.ToString(),
-                    Title = t.Title,
-                    Country = t.Country,
-                    City = t.City,
-                    PlaceOfEvent = t.PlaceOfEvent,
-                    ImageUrl = t.ImageUrl,
-                    Quantity = t.Quantity,
-                    PricePerTicket = t.PricePerTicket,
-                    Currency = t.Currency.CurrencyCode,
-                    EventDate = t.EventDate,
-                    Category = t.Category.Name
-                })
-                .ToArrayAsync();
+            //IEnumerable<DetailsViewModel> detailsModel = await this.dbContext
+            //    .Tickets
+            //    .Where(t => t.Id.ToString() == ticketId)
+            //    .Select(t => new DetailsViewModel()
+            //    {
+            //        Id = t.Id.ToString(),
+            //        Title = t.Title,
+            //        Country = t.Country,
+            //        City = t.City,
+            //        PlaceOfEvent = t.PlaceOfEvent,
+            //        ImageUrl = t.ImageUrl,
+            //        EventDate = t.EventDate,
+            //        Quantity = t.Quantity,
+            //        PricePerTicket = t.PricePerTicket,
+            //        Currency = t.Currency.CurrencyCode,
+            //        Category = t.Category.Name
+            //    })
+            //    .ToArrayAsync();
 
-            return detailsModel;
+            //Ticket ticket = await dbContext
+            //    .Tickets
+            //    .Include(t => t.Quantity)
+            //    .Include(t => t.PricePerTicket)
+            //    .Include(t => t.Currency.CurrencyCode)
+            //    .Include(t => t.Category.Name)
+            //    .FirstAsync(t => t.Id.ToString() == ticketId);
+
+            Ticket ticket = await dbContext
+                .Tickets
+                .FirstAsync(t => t.Id.ToString() == ticketId);
+
+            return new DetailsViewModel()
+            {
+                Id = ticket.Id.ToString(),
+                Title = ticket.Title,
+                Country = ticket.Country,
+                City = ticket.City,
+                PlaceOfEvent = ticket.PlaceOfEvent,
+                ImageUrl = ticket.ImageUrl,
+                EventDate = ticket.EventDate,
+                Quantity = ticket.Quantity,
+                PricePerTicket = ticket.PricePerTicket,
+                Currency = ticket.Currency.CurrencyCode,
+                Category = ticket.Category.Name
+            };
+        }
+
+        public async Task<bool> ExistsByIdAsync(string ticketId)
+        {
+            bool result = await dbContext
+                 .Tickets
+                 .Where(t => t.isActive)
+                 .AnyAsync(t => t.Id.ToString() == ticketId);
+
+            return result;
         }
     }
 }

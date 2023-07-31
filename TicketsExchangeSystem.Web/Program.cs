@@ -7,6 +7,9 @@ namespace TicketsExchangeSystem.Web
     using TicketsExchangeSystem.Services.Data;
     using TicketsExchangeSystem.Services.Data.Interfaces;
 
+    using AspNetCoreHero.ToastNotification;
+    using AspNetCoreHero.ToastNotification.Extensions;
+
     public class Program
     {
         public static void Main(string[] args)
@@ -30,6 +33,13 @@ namespace TicketsExchangeSystem.Web
                     options.Password.RequiredLength = builder.Configuration.GetValue<int>("Identity:Password:RequiredLength");
                 })
                 .AddEntityFrameworkStores<TicketsExchangedbContext>();
+
+            builder.Services.AddNotyf(config =>
+            {
+                config.DurationInSeconds = builder.Configuration.GetValue<int>("ToastNotification:DurationInSeconds");
+                config.IsDismissable = builder.Configuration.GetValue<bool>("ToastNotification:IsDismissable");
+                config.Position = NotyfPosition.TopRight;
+            });
 
             builder.Services.AddControllersWithViews();
 
@@ -57,6 +67,8 @@ namespace TicketsExchangeSystem.Web
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseNotyf();
 
             app.MapControllerRoute(
                 name: "default",

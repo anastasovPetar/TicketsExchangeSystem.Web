@@ -1,7 +1,4 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-
-namespace TicketsExchangeSystem.Web.ViewModels.Home
+﻿namespace TicketsExchangeSystem.Web.ViewModels.Home
 {
     public class DetailsViewModel
     {

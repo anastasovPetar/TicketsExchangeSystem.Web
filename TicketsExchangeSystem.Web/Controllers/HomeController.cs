@@ -1,8 +1,10 @@
 ﻿namespace TicketsExchangeSystem.Web.Controllers
 {
+    using AspNetCoreHero.ToastNotification.Abstractions;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using System.Diagnostics;
+
     using TicketsExchangeSystem.Services.Data.Interfaces;
     using ViewModels.Home;
 
@@ -10,10 +12,13 @@
     public class HomeController : Controller
     {
         private readonly ITicketService ticketService;
-        
-        public HomeController(ITicketService ticketService)
+        private readonly INotyfService notyf;
+
+
+        public HomeController(ITicketService ticketService, INotyfService notyf)
         {
            this.ticketService = ticketService;
+           this.notyf = notyf;
         }
 
         [HttpGet]
@@ -45,11 +50,22 @@
         }
 
 
-        //[HttpGet]
-        //public async Task<IActionResult> Details(string id) 
-        //{ 
+        [HttpGet]
+        public async Task<IActionResult> Details(string id)
+        {
+            bool exists = await ticketService.ExistsByIdAsync(id);
 
-        //}
+            if (!exists)
+            {
+                notyf.Error("This ticket does not exists!");
+
+                return RedirectToAction("Index", "Home");
+            }
+
+            DetailsViewModel viewModel = await ticketService.GetDetailsByIdAsysnc(id);
+
+            return View(viewModel);
+        }
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
