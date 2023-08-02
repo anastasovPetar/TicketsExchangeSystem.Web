@@ -14,8 +14,10 @@
             public const int CityNameMinLength = 5;
             public const int CityNameMaxLength = 100;
 
+            public const int AddresslineMinLength = 5;
             public const int AddresslineMaxLength = 255;
 
+            public const int PlaceOfEventMinLength = 5;
             public const int PlaceOfEventMaxLength = 100;
 
             public const int ImageUrlMaxLenght = 20148;

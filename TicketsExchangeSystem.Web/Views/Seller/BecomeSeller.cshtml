@@ -12,13 +12,6 @@
 </div>
 <hr />
 
-@if (!ViewData.ModelState.IsValid && ViewData.ModelState["Error"] != null)
-{
-    @*<div class="alert alert-danger" role="alert">
-        @ViewData.ModelState["Error"].Errors.First().ErrorMessage
-    </div>*@
-}
-
 
 <div class="container py-5">
     <div class="row">
@@ -47,16 +40,3 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
-
-@*<script type="text/javascript">
-      var checkForm = function(form) {
-    
-    if(!form.terms.checked) {
-      alert("Please indicate that you accept the Terms and Conditions");
-      form.terms.focus();
-      return false;
-    }
-    return true;
-  };
-}
-</script>*@
