@@ -22,6 +22,8 @@
                     CurrencyCode = c.CurrencyCode
                 })
                 .ToArrayAsync();
+
+            return currencies;
         }
     }
 }
