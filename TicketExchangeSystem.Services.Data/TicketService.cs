@@ -54,7 +54,8 @@
 
             IEnumerable<WeekendViewModel> weekendEvents = await dbContext
                 .Tickets                
-                .Where(t => t.EventDate.Date >= thisSaturday || t.EventDate <= thisSunday)
+                .Where(t => t.EventDate.Date >= thisSaturday)
+                .Where(t => t.EventDate.Date <= thisSunday)
                 .Select(t => new WeekendViewModel()
                  {
                      Id = t.Id.ToString(),
