@@ -3,11 +3,11 @@
     using System;
     using System.Linq;
     using Microsoft.EntityFrameworkCore;
+    using System.Collections.Generic;
 
     using TicketsExchangeSystem.Services.Data.Interfaces;
     using TicketsExchangeSystem.Data;
     using TicketsExchangeSystem.Web.ViewModels.Home;
-    using System.Collections.Generic;
     using TicketsExchangeSystem.Data.Models;
 
     public class TicketService : ITicketService
@@ -92,17 +92,18 @@
             //    })
             //    .ToArrayAsync();
 
-            //Ticket ticket = await dbContext
-            //    .Tickets
-            //    .Include(t => t.Quantity)
-            //    .Include(t => t.PricePerTicket)
-            //    .Include(t => t.Currency.CurrencyCode)
-            //    .Include(t => t.Category.Name)
-            //    .FirstAsync(t => t.Id.ToString() == ticketId);
-
             Ticket ticket = await dbContext
                 .Tickets
+                .Include(t => t.Quantity)
+                //.Include(t => t.PricePerTicket)
+                //.ThenInclude(c => c.Currency)
+                .Include(c => c.Category)
+                .OrderBy(t => t.EventDate)
                 .FirstAsync(t => t.Id.ToString() == ticketId);
+
+            //Ticket ticket = await dbContext
+            //    .Tickets
+            //    .FirstAsync(t => t.Id.ToString() == ticketId);
 
             return new DetailsViewModel()
             {
@@ -116,7 +117,7 @@
                 Quantity = ticket.Quantity,
                 PricePerTicket = ticket.PricePerTicket,
                 Currency = ticket.Currency.CurrencyCode,
-                Category = ticket.Category.Name
+                Category = ticket.Category.Name,
             };
         }
 

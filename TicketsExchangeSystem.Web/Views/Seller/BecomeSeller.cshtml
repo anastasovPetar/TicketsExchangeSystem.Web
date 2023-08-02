@@ -1,0 +1,62 @@
+﻿@model BecomeSellerFormModel
+
+@{
+    ViewData["Title"] = "Become Seller";
+}
+<div class="container">
+    <div class="d-grid gap-2 text-center">
+        <div>
+            <h1 class="display-4 mt-4">@ViewData["Title"]</h1>
+        </div>
+    </div>
+</div>
+<hr />
+
+@if (!ViewData.ModelState.IsValid && ViewData.ModelState["Error"] != null)
+{
+    @*<div class="alert alert-danger" role="alert">
+        @ViewData.ModelState["Error"].Errors.First().ErrorMessage
+    </div>*@
+}
+
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Terms of Service Agreement</h2>
+            <h4 class="mb-3">Please read the following terms of service carefully before using our website.</h4>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus eu tincidunt velit, eget consectetur dui. Mauris vel velit in nunc laoreet mollis eu eu risus. Fusce sit amet nulla volutpat, consequat urna et, faucibus risus. Ut eget velit leo.</p>
+            <p>Nullam eu odio vel lectus tempor tincidunt. Nulla facilisi. Curabitur sagittis orci non sapien fermentum, ac eleifend nulla vulputate. Aliquam eget volutpat odio, vitae mollis velit.</p>
+            <p>By clicking "I Agree," you agree to be bound by these terms of service and our privacy policy.</p>
+
+            <form method="post">
+                <div class="form-group">      
+                    <input asp-for="Agreed" type="checkbox" />
+                    <label asp-for="Agreed" class="control-label"></label>
+                    </p><span asp-validation-for="Agreed" class="text-danger"></span></p>
+                </div>
+                
+                <div class="text-center">                    
+                    <input class="btn btn-outline-success mt-3 " type="submit" value="I Agree!" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+@*<script type="text/javascript">
+      var checkForm = function(form) {
+    
+    if(!form.terms.checked) {
+      alert("Please indicate that you accept the Terms and Conditions");
+      form.terms.focus();
+      return false;
+    }
+    return true;
+  };
+}
+</script>*@

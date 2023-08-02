@@ -1,5 +1,6 @@
 ﻿namespace TicketsExchangeSystem.Web.ViewModels.Home
 {
+    
     public class DetailsViewModel
     {
         public string Id { get; set; } = null!;
