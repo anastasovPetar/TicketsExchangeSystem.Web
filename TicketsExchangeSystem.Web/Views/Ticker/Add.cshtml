@@ -1,5 +1,22 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model TicketFormViewModel;
+
 @{
+    ViewData["Title"] = "Add new ticket";
+}
+
+
+<div class="container">
+    <div class="d-grid gap-2 text-center">
+        <div>
+            <h2 class="display-4 mt-4">@ViewData["Title"]</h2>
+        </div>
+    </div>
+</div>
+
+<div class="mb-3"></div>
+
+<partial name="_TicketFormPartial" />
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" model="@Model" />
 }
