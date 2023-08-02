@@ -64,6 +64,7 @@
 
         [Display(Name = "Currency")]
         public int CurrencyId { get; set; }
+
         public IEnumerable<TicketSelectCategoryFormModel> Categories { get; set; }
         public IEnumerable<TicketSelectCurrencyFormModel> Currencies { get; set; }
     }

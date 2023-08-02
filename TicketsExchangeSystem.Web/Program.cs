@@ -46,6 +46,8 @@ namespace TicketsExchangeSystem.Web
             builder.Services.AddScoped<ITicketService, TicketService>();
             builder.Services.AddScoped<IDateService, DateService>();
             builder.Services.AddScoped<ISellerService, SellerService>();
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
+            builder.Services.AddScoped<ICurrencyService, CurrencyService>();
 
             WebApplication app = builder.Build();
 
