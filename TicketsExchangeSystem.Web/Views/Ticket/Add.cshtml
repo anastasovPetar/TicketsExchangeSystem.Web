@@ -18,5 +18,16 @@
 <partial name="_TicketFormPartial" />
 
 @section Scripts{
+    <script type="text/javascript">
+        config = {
+            enableTime: true,
+            time_24hr: true,
+            minDate: "today",
+            dateFormat: "d.m.Y H:i",
+        }
+
+        flatpickr(".datepicker", config);
+    </script>
+
     <partial name="_ValidationScriptsPartial" model="@Model" />
 }

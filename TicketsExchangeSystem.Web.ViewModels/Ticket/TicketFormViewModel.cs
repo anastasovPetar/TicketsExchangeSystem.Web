@@ -29,7 +29,7 @@
 
         [Required]
         [StringLength(PlaceOfEventMaxLength, MinimumLength = PlaceOfEventMinLength)]
-        [DisplayName("Event place")]
+        [DisplayName("Place of event")]
         public string PlaceOfEvent { get; set; } = null!;
 
 
@@ -57,7 +57,9 @@
 
         [Required]
         [Display(Name = "Event date")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy HH:mm}")]
         public DateTime EventDate { get; set; }
+
 
         [Display(Name = "Category")]
         public int CategoryId { get; set; }

@@ -17,37 +17,37 @@
                 <div class="form-group">
                     <label asp-for="City"></label>
                     <input asp-for="City" class="form-control" placeholder="City name...">
-                    <span asp-validation-for="City" class="small textdanger"></span>
+                    <span asp-validation-for="City" class="small text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="PlaceOfEvent"></label>
                     <input asp-for="PlaceOfEvent" class="form-control" placeholder="Place of event...">
-                    <span asp-validation-for="PlaceOfEvent" class="small textdanger"></span>
+                    <span asp-validation-for="PlaceOfEvent" class="small text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Address1"></label>
                     <input asp-for="Address1" class="form-control" placeholder="Address line 1...">
-                    <span asp-validation-for="Address1" class="small textdanger"></span>
+                    <span asp-validation-for="Address1" class="small text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Address2"></label>
-                    <input asp-for="Address2"class="form-control" placeholder="Address line 2...">
-                    <span asp-validation-for="Address1" class="small textdanger"></span>
+                    <input asp-for="Address2" class="form-control" placeholder="Address line 2...">
+                    <span asp-validation-for="Address2" class="small text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="ImageUrl"></label>
                     <input asp-for="ImageUrl" class="form-control" placeholder="Picture url...">
-                    <span asp-validation-for="ImageUrl" class="small textdanger"></span>
+                    <span asp-validation-for="ImageUrl" class="small text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Quantity"></label>
-                    <input asp-for="Quantity" class="form-control" placeholder="10...">
-                    <span asp-validation-for="Quantity" class="small textdanger"></span>
+                    <input asp-for="Quantity" class="form-control">
+                    <span asp-validation-for="Quantity" class="small text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="PricePerTicket"></label>
                     <input asp-for="PricePerTicket" class="form-control" placeholder="12.34">
-                    <span asp-validation-for="PricePerTicket" class="small textdanger"></span>
+                    <span asp-validation-for="PricePerTicket" class="small text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="CurrencyId"></label>
@@ -57,23 +57,15 @@
                             <option value="@currency.Id">@currency.CurrencyCode</option>
                         }
                     </select>
-                    <span asp-validation-for="CurrencyId" class="small textdanger"></span>
+                    <span asp-validation-for="CurrencyId" class="small text-danger"></span>
                 </div>
+
                 <div class="form-group">
-                    <label asp-for="EventDate"></label>
-                    <input asp-for="EventDate" class="form-control" placeholder="12.34">
-                    <span asp-validation-for="EventDate" class="small textdanger"></span>
-                </div>                
-                <div class="form-group">
-                    <label asp-for="EventDate"></label>
-                    <input asp-for="EventDate" class="form-control" asp-format="{0:dd-MM-yyyyTHH:mm}">
-                    <span asp-validation-for="EventDate" class="small textdanger"></span>
-                </div>               
-                <div class="form-group">
-                    <label asp-for="CategoryId"></label>
-                    <input asp-for="CategoryId" class="form-control">
-                    <span asp-validation-for="CategoryId" class="small textdanger"></span>
+                    <label asp-for="EventDate" class="control-label"></label>
+                    <input type="datetime-local" id="EventDate" name="EventDate" class="datepicker form-control">
+                    <span asp-validation-for="EventDate" class="small text-danger"></span>
                 </div>
+
                 <div class="form-group">
                     <label asp-for="CategoryId"></label>
                     <select asp-for="CategoryId" class="form-control">
@@ -82,7 +74,7 @@
                             <option value="@category.Id">@category.Name</option>
                         }
                     </select>
-                    <span asp-validation-for="CategoryId" class="small textdanger"></span>
+                    <span asp-validation-for="CategoryId" class="small text-danger"></span>
                 </div>
                 <div class="text-center">
                     <input class="btn btn-outline-success mt-3" type="submit" value="Save" />
@@ -91,3 +83,5 @@
         </div>
     </div>
 </container>
+
+
