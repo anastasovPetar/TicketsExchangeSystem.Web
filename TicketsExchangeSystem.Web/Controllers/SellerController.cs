@@ -32,7 +32,7 @@
             {
                 notyf.Warning("You can already sell your tickets!");
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Add", "Ticket");
             }
             return View();
         }
