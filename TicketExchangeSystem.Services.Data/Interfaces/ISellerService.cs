@@ -7,5 +7,7 @@ namespace TicketsExchangeSystem.Services.Data.Interfaces
         Task<bool> SellerExistsByUserIdAsync(string userId);
 
         Task Create(string userId, BecomeSellerFormModel model);
+
+        Task<string?> GetRegisteredSellerIdFromUserIdAsync(string userId);
     }
 }

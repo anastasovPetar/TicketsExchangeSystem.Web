@@ -12,6 +12,7 @@
         {
             this.dbContext = dbContext;
         }
+
         public async Task<IEnumerable<TicketSelectCurrencyFormModel>> GetAllCurrenciesAsync()
         {
             IEnumerable<TicketSelectCurrencyFormModel> currencies = await dbContext
@@ -24,6 +25,15 @@
                 .ToArrayAsync();
 
             return currencies;
+        }
+
+        public async Task<bool> ExistsByIdAsync(int currencyId)
+        {
+            bool exists = await dbContext
+                .Currencies
+                .AnyAsync(c => c.Id == currencyId);
+
+            return exists;
         }
     }
 }

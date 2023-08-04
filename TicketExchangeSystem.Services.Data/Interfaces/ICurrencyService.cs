@@ -4,5 +4,6 @@
     public interface ICurrencyService
     {
         Task<IEnumerable<TicketSelectCurrencyFormModel>> GetAllCurrenciesAsync();
+        Task<bool> ExistsByIdAsync(int currencyId);
     }
 }

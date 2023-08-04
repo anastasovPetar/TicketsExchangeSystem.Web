@@ -4,5 +4,7 @@
     public interface ICategoryService
     {
         Task<IEnumerable<TicketSelectCategoryFormModel>> GetAllCategoriesAsync();
+
+        Task<bool> ExistsByIdAsync(int id);
     }
 }

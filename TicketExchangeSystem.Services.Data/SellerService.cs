@@ -36,5 +36,19 @@
             await dbContext.Sellers.AddAsync(newSeller);
             await dbContext.SaveChangesAsync();
         }
+
+        public async Task<string?> GetRegisteredSellerIdFromUserIdAsync(string userId)
+        {
+            Seller? seller = await dbContext
+                .Sellers
+                .FirstOrDefaultAsync(a => a.UserId.ToString() == userId);
+
+            if (seller == null)
+            {
+                return null;
+            }
+
+            return seller.Id.ToString();
+        }
     }
 }
