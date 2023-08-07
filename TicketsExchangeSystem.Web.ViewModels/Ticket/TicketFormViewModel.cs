@@ -6,8 +6,9 @@
     using TicketsExchangeSystem.Web.ViewModels.Category;
     using TicketsExchangeSystem.Web.ViewModels.Currency;
     using static TicketsEchangeSystem.Common.ValidationConstantsForEntities.Ticket;
+    using TicketsEchangeSystem.Common;
 
-    public class TicketFormViewModel
+    public class TicketFormViewModel : IValidatableObject
     {
         public TicketFormViewModel()
         {
@@ -48,6 +49,8 @@
         public string? ImageUrl { get; set; }
 
         [Required]
+        [Range(QuantityMinAmount, int.MaxValue, ErrorMessage = "Please enter a valid quantity")]
+        [Display(Name = "Quantity")]
         public int Quantity { get; set; }
 
         [Required]
@@ -57,9 +60,9 @@
 
         [Required]
         [Display(Name = "Event date")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy HH:mm}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd.MM.yyyy HH:mm}")]
+       // [CustomEventDateValidation]
         public DateTime EventDate { get; set; }
-
 
         [Display(Name = "Category")]
         public int CategoryId { get; set; }
@@ -69,5 +72,17 @@
 
         public IEnumerable<TicketSelectCategoryFormModel> Categories { get; set; }
         public IEnumerable<TicketSelectCurrencyFormModel> Currencies { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            DateTime today = DateTime.Now;
+
+            List<ValidationResult> errors = new List<ValidationResult>();
+            if (today < EventDate)
+            {
+                errors.Add(new ValidationResult($"{nameof(EventDate)} needs to be greater than From date.", new List<string> { nameof(today) }));
+            }
+            return errors;
+        }
     }
 }

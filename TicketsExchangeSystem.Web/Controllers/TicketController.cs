@@ -62,19 +62,16 @@
             bool categoryExists = await categoryService.ExistsByIdAsync(viewModel.CategoryId);
             if (!categoryExists)
             {
-               // notyf.Error("Selected category does not exist!");
+               notyf.Error("Selected category does not exist!");
 
-                ModelState.AddModelError(nameof(viewModel.CategoryId), "Selected category does not exist!");
+               //ModelState.AddModelError(nameof(viewModel.CategoryId), "Selected category does not exist!");
 
             }
 
             bool currecyExists = await currencyService.ExistsByIdAsync(viewModel.CurrencyId);
             if (!categoryExists)
             {
-                //notyf.Error("Selected category does not exist!");
-
-                ModelState.AddModelError(nameof(viewModel.CurrencyId), "Selected currency does not exist!");
-
+                notyf.Error("Selected currency does not exist!");
             }
 
 
@@ -85,6 +82,21 @@
 
                 return View(viewModel);
             }
+
+            try
+            {
+                 string? sellerId = await sellerService.GetRegisteredSellerIdFromUserIdAsync(User.GetId()!);
+                //to be inserted in db
+
+                return RedirectToAction("Details", "Ticket");
+            }
+            catch (Exception)
+            {
+                notyf.Error("Unexpected error occurred while creating new ticket. Please, try again later.");
+                viewModel.Categories = await categoryService.GetAllCategoriesAsync();
+
+                return View(viewModel);
+            }           
         }
     }
 }

@@ -22,7 +22,10 @@
 
             public const int ImageUrlMaxLenght = 20148;
 
-            public const string PricePerTicketMinValue = "0";
+            public const int QuantityMinAmount = 1;
+
+
+            public const string PricePerTicketMinValue = "1";
             public const string PricePerTicketMaxValue = "999";
         }
 
