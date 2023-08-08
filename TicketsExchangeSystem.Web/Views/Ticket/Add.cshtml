@@ -18,16 +18,23 @@
 <partial name="_TicketFormPartial" />
 
 @section Scripts{
+
+    <partial name="_ValidationScriptsPartial" model="@Model" />
+
     <script type="text/javascript">
-        config = {
+        configFlatpickr = {
             enableTime: true,
             time_24hr: true,
             minDate: "today",
             dateFormat: "d.m.Y H:i"
         }
 
-        flatpickr(".datepicker", config);
-    </script>
+       flatpickr(".datepicker", configFlatpickr);
 
-    <partial name="_ValidationScriptsPartial" model="@Model" />
+        //let eventDateTime = flatpickr(document.getElementById('EventDate'), configFlatpickr);
+
+        $('#form1').submit((e) => {
+            $('#EventDate').val(eventDateTime.latestSelectedDateObj.toLocaleString());
+        });
+    </script>
 }

@@ -48,7 +48,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(TicketFormViewModel viewModel)
+        public async Task<IActionResult> Add(TicketFormViewModel model)
         {
             bool isSeller = await sellerService.SellerExistsByUserIdAsync(this.User.GetId()!);
 
@@ -59,7 +59,7 @@
                 return RedirectToAction("BecomeSeller", "Seller");
             }
 
-            bool categoryExists = await categoryService.ExistsByIdAsync(viewModel.CategoryId);
+            bool categoryExists = await categoryService.ExistsByIdAsync(model.CategoryId);
             if (!categoryExists)
             {
                notyf.Error("Selected category does not exist!");
@@ -68,8 +68,8 @@
 
             }
 
-            bool currecyExists = await currencyService.ExistsByIdAsync(viewModel.CurrencyId);
-            if (!categoryExists)
+            bool currecyExists = await currencyService.ExistsByIdAsync(model.CurrencyId);
+            if (!currecyExists)
             {
                 notyf.Error("Selected currency does not exist!");
             }
@@ -77,10 +77,10 @@
 
             if (!ModelState.IsValid)
             {
-                viewModel.Categories = await categoryService.GetAllCategoriesAsync();
-                viewModel.Currencies = await currencyService.GetAllCurrenciesAsync();
+                model.Categories = await categoryService.GetAllCategoriesAsync();
+                model.Currencies = await currencyService.GetAllCurrenciesAsync();
 
-                return View(viewModel);
+                return View(model);
             }
 
             try
@@ -93,9 +93,9 @@
             catch (Exception)
             {
                 notyf.Error("Unexpected error occurred while creating new ticket. Please, try again later.");
-                viewModel.Categories = await categoryService.GetAllCategoriesAsync();
+                model.Categories = await categoryService.GetAllCategoriesAsync();
 
-                return View(viewModel);
+                return View(model);
             }           
         }
     }

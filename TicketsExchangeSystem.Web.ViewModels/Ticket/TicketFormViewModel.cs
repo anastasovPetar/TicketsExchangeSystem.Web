@@ -58,12 +58,12 @@
         [Range(typeof(decimal), PricePerTicketMinValue, PricePerTicketMaxValue)]
         public decimal PricePerTicket { get; set; }
 
-        [Required]
+        [Required(ErrorMessage ="Please enter the date and time of the event.")]
         [Display(Name = "Event date")]
+        [DisplayFormat(DataFormatString = "{0:dd'/'MM'/'yyyy HH:mm}", ApplyFormatInEditMode = true)]
         [DataType(DataType.DateTime)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd.MM.yyyy HH:mm}")]
-        [CustomEventDateValidation(ErrorMessage = "The date and time of the event cannot be before today")]
-        public DateTime EventDate { get; set; }
+        [EventDateValidate(ErrorMessage = "The date and time of the event cannot be before today")]
+        public DateTime? EventDate { get; set; }
 
         [Display(Name = "Category")]
         public int CategoryId { get; set; }
