@@ -8,7 +8,7 @@
     using static TicketsEchangeSystem.Common.ValidationConstantsForEntities.Ticket;
     using TicketsEchangeSystem.Common;
 
-    public class TicketFormViewModel : IValidatableObject
+    public class TicketFormViewModel 
     {
         public TicketFormViewModel()
         {
@@ -60,8 +60,9 @@
 
         [Required]
         [Display(Name = "Event date")]
+        [DataType(DataType.DateTime)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd.MM.yyyy HH:mm}")]
-       // [CustomEventDateValidation]
+        [CustomEventDateValidation(ErrorMessage = "The date and time of the event cannot be before today")]
         public DateTime EventDate { get; set; }
 
         [Display(Name = "Category")]
@@ -73,16 +74,6 @@
         public IEnumerable<TicketSelectCategoryFormModel> Categories { get; set; }
         public IEnumerable<TicketSelectCurrencyFormModel> Currencies { get; set; }
 
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            DateTime today = DateTime.Now;
 
-            List<ValidationResult> errors = new List<ValidationResult>();
-            if (today < EventDate)
-            {
-                errors.Add(new ValidationResult($"{nameof(EventDate)} needs to be greater than From date.", new List<string> { nameof(today) }));
-            }
-            return errors;
-        }
     }
 }
