@@ -9,6 +9,7 @@
     using TicketsExchangeSystem.Data;
     using TicketsExchangeSystem.Web.ViewModels.Home;
     using TicketsExchangeSystem.Data.Models;
+    using TicketsExchangeSystem.Web.ViewModels.Ticket;
 
     public class TicketService : ITicketService
     {
@@ -21,7 +22,7 @@
             this.dateService = dateService;
         }
 
-       
+
 
         public async Task<IEnumerable<TodayViewModel>> GetTodayEventAsync()
         {
@@ -53,22 +54,22 @@
 
 
             IEnumerable<WeekendViewModel> weekendEvents = await dbContext
-                .Tickets                
+                .Tickets
                 .Where(t => t.EventDate.Date >= thisSaturday)
                 .Where(t => t.EventDate.Date <= thisSunday)
                 .Select(t => new WeekendViewModel()
-                 {
-                     Id = t.Id.ToString(),
-                     Title = t.Title,
-                     Country = t.Country,
-                     City = t.City,
-                     PlaceOfEvent = t.PlaceOfEvent,
-                     ImageUrl = t.ImageUrl,
-                     EventDate = t.EventDate
-                 })
+                {
+                    Id = t.Id.ToString(),
+                    Title = t.Title,
+                    Country = t.Country,
+                    City = t.City,
+                    PlaceOfEvent = t.PlaceOfEvent,
+                    ImageUrl = t.ImageUrl,
+                    EventDate = t.EventDate
+                })
                  .ToListAsync();
 
-                         
+
             return weekendEvents;
         }
 
@@ -130,6 +131,31 @@
                  .AnyAsync(t => t.Id.ToString() == ticketId);
 
             return result;
+        }
+
+        public async Task CreateAsync(TicketFormViewModel formViewModel, string sellerId)
+        {
+
+            Ticket ticket = new Ticket()
+            {
+                Title = formViewModel.Title,
+                Country = formViewModel.Country,
+                City = formViewModel.City,
+                PlaceOfEvent = formViewModel.PlaceOfEvent,
+                Address1 = formViewModel.Address1,
+                Address2 = formViewModel.Address2,
+                ImageUrl = formViewModel.ImageUrl,
+                Quantity = formViewModel.Quantity,
+                PricePerTicket = formViewModel.PricePerTicket,
+                EventDate = (DateTime)formViewModel.EventDate!,
+                CreatedOn = DateTime.Now,
+                SellerId =  Guid.Parse(sellerId!),
+                CurrencyId = formViewModel.CurrencyId,
+                CategoryId = formViewModel.CategoryId
+            };
+
+            await dbContext.Tickets.AddAsync(ticket);
+            await dbContext.SaveChangesAsync();
         }
     }
 }

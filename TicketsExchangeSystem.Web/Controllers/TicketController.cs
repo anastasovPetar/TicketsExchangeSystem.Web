@@ -15,15 +15,18 @@
         private readonly ICurrencyService currencyService;
         private readonly ISellerService sellerService;
         private readonly INotyfService notyf;
+        private readonly ITicketService ticketService;
         public TicketController(ICategoryService categoryService, 
-                                ICurrencyService currencyService, 
+                                ICurrencyService currencyService,
                                 ISellerService sellerService,
-                                INotyfService notyf)
+                                INotyfService notyf,
+                                ITicketService ticketService)
         {
             this.categoryService = categoryService;
             this.currencyService = currencyService;
             this.sellerService = sellerService;
             this.notyf = notyf;
+            this.ticketService = ticketService;
         }
 
         [HttpGet]
@@ -50,53 +53,98 @@
         [HttpPost]
         public async Task<IActionResult> Add(TicketFormViewModel model)
         {
-            bool isSeller = await sellerService.SellerExistsByUserIdAsync(this.User.GetId()!);
-
-            if (!isSeller)
+            try
             {
-                notyf.Error("You must be a seller to be able to sell tickets! We are going to redirect you.");
+                bool isSeller = await sellerService.SellerExistsByUserIdAsync(this.User.GetId()!);
 
-                return RedirectToAction("BecomeSeller", "Seller");
+                if (!isSeller)
+                {
+                    notyf.Error("You must be a seller to be able to sell tickets! We are going to redirect you.");
+
+                    return RedirectToAction("BecomeSeller", "Seller");
+                }
+            }
+            catch (Exception)
+            {
+
+                notyf.Error("Unexpected error occurred while accessing the database. Please, try again later.");
             }
 
-            bool categoryExists = await categoryService.ExistsByIdAsync(model.CategoryId);
-            if (!categoryExists)
+
+
+            try
             {
-               notyf.Error("Selected category does not exist!");
+                bool categoryExists = await categoryService.ExistsByIdAsync(model.CategoryId);
+                if (!categoryExists)
+                {
+                    notyf.Error("Selected category does not exist!");
 
-               //ModelState.AddModelError(nameof(viewModel.CategoryId), "Selected category does not exist!");
-
+                    ModelState.AddModelError(nameof(model.CategoryId), "Selected category does not exist!");
+                }
+            }
+            catch (Exception)
+            {
+                notyf.Error("Unexpected error occurred while accessing the database. Please, try again later.");
             }
 
-            bool currecyExists = await currencyService.ExistsByIdAsync(model.CurrencyId);
-            if (!currecyExists)
+
+
+            try
             {
-                notyf.Error("Selected currency does not exist!");
+                bool currecyExists = await currencyService.ExistsByIdAsync(model.CurrencyId);
+                if (!currecyExists)
+                {
+                    notyf.Error("Selected currency does not exist!");
+
+                    ModelState.AddModelError(nameof(model.CurrencyId), "Selected currency does not exist!");
+                }
             }
+            catch (Exception)
+            {
+                notyf.Error("Unexpected error occurred while accessing the database. Please, try again later.");
+            }
+
+
 
 
             if (!ModelState.IsValid)
-            {
-                model.Categories = await categoryService.GetAllCategoriesAsync();
-                model.Currencies = await currencyService.GetAllCurrenciesAsync();
+            { 
+                try
+                {
+                    model.Categories = await categoryService.GetAllCategoriesAsync();
+                    model.Currencies = await currencyService.GetAllCurrenciesAsync();
 
-                return View(model);
+                    return View(model);
+                }
+                catch (Exception)
+                {
+                    notyf.Error("Unexpected error occurred while accessing the database. Please, try again later.");
+                }
             }
 
             try
             {
-                 string? sellerId = await sellerService.GetRegisteredSellerIdFromUserIdAsync(User.GetId()!);
-                //to be inserted in db
+                string? sellerId = await sellerService.GetRegisteredSellerIdFromUserIdAsync(User.GetId()!);
+                await ticketService.CreateAsync(model, sellerId!);
 
-                return RedirectToAction("Details", "Ticket");
+                notyf.Success("The ticket has been successfully created!");
             }
             catch (Exception)
             {
                 notyf.Error("Unexpected error occurred while creating new ticket. Please, try again later.");
                 model.Categories = await categoryService.GetAllCategoriesAsync();
+                model.Currencies = await currencyService.GetAllCurrenciesAsync();
 
                 return View(model);
-            }           
+            }   
+            
+            return RedirectToAction("Details", "Ticket");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details()
+        {
+            return Ok();
         }
     }
 }

@@ -62,7 +62,7 @@
         [Display(Name = "Event date")]
         [DisplayFormat(DataFormatString = "{0:dd'/'MM'/'yyyy HH:mm}", ApplyFormatInEditMode = true)]
         [DataType(DataType.DateTime)]
-        [EventDateValidate(ErrorMessage = "The date and time of the event cannot be before today")]
+        [EventDateValidate(ErrorMessage = "The date and time of the event cannot be earlier than now!")]
         public DateTime? EventDate { get; set; }
 
         [Display(Name = "Category")]
