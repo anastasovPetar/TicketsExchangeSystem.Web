@@ -4,6 +4,7 @@
     using System.Linq;
     using Microsoft.EntityFrameworkCore;
     using System.Collections.Generic;
+    using static TicketsEchangeSystem.Common.GeneralConstants;
 
     using TicketsExchangeSystem.Services.Data.Interfaces;
     using TicketsExchangeSystem.Data;
@@ -37,7 +38,7 @@
                     Country = t.Country,
                     City = t.City,
                     PlaceOfEvent = t.PlaceOfEvent,
-                    ImageUrl = t.ImageUrl,
+                    ImageUrl = (t.ImageUrl == null ? noImgPath : t.ImageUrl),
                     EventDate = t.EventDate
                 })
                 .ToArrayAsync();
@@ -48,15 +49,18 @@
 
         async Task<IEnumerable<WeekendViewModel>> ITicketService.GetWeekendEventsAsync()
         {
-            var startOfWeek = await dateService.GetFirstDayOfThisWeekAsync(DateTime.Now.Date);
-            var thisSaturday = startOfWeek.AddDays(5).Date;
-            var thisSunday = startOfWeek.AddDays(6).Date;
+            var startOfWeek = await dateService.GetFirstDayOfThisWeekAsync(DateTime.Now);
+            var thisSaturday = startOfWeek.AddDays(5);
+            var thisSunday = startOfWeek.AddDays(6);
 
+            var weekendStart = thisSaturday;
+            var weekendEnd = thisSunday.AddHours(23).AddMinutes(59).AddSeconds(59);
+            var dtNow = DateTime.Now;
 
+           
             IEnumerable<WeekendViewModel> weekendEvents = await dbContext
-                .Tickets
-                .Where(t => t.EventDate.Date >= thisSaturday)
-                .Where(t => t.EventDate.Date <= thisSunday)
+                .Tickets 
+                .Where(t => t.EventDate >= weekendStart && t.EventDate <= weekendEnd && t.EventDate > dtNow)
                 .Select(t => new WeekendViewModel()
                 {
                     Id = t.Id.ToString(),
@@ -64,7 +68,7 @@
                     Country = t.Country,
                     City = t.City,
                     PlaceOfEvent = t.PlaceOfEvent,
-                    ImageUrl = t.ImageUrl,
+                    ImageUrl = (t.ImageUrl == null ? noImgPath : t.ImageUrl),
                     EventDate = t.EventDate
                 })
                  .ToListAsync();

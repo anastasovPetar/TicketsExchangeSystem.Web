@@ -4,6 +4,6 @@
     {
         public const int AppYeayRelease = 2023;
 
-        public const decimal EURtoBGN = 1.95m;
+        public static string noImgPath =  "/pics/no-image.png";
     }
 }
