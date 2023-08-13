@@ -16,11 +16,13 @@
     {
         private readonly TicketsExchangedbContext dbContext;
         private readonly IDateService dateService;
+        private readonly DateTime dtNow;
 
         public TicketService(TicketsExchangedbContext dbContext, IDateService dateService)
         {
             this.dbContext = dbContext;
             this.dateService = dateService;
+            this.dtNow = DateTime.Now;
         }
 
 
@@ -29,7 +31,8 @@
         {
             IEnumerable<TodayViewModel> todayEvents = await this.dbContext
                 .Tickets
-                .Where(t => t.EventDate.Date == DateTime.Now.Date)
+                .Where(t => t.isActive)
+                .Where(t => t.EventDate.Date == DateTime.Now.Date && t.EventDate > dtNow)
 
                 .Select(t => new TodayViewModel()
                 {
@@ -49,17 +52,18 @@
 
         async Task<IEnumerable<WeekendViewModel>> ITicketService.GetWeekendEventsAsync()
         {
-            var startOfWeek = await dateService.GetFirstDayOfThisWeekAsync(DateTime.Now);
+            var startOfWeek = await dateService.GetFirstDayOfThisWeekAsync(dtNow);
             var thisSaturday = startOfWeek.AddDays(5);
             var thisSunday = startOfWeek.AddDays(6);
 
             var weekendStart = thisSaturday;
             var weekendEnd = thisSunday.AddHours(23).AddMinutes(59).AddSeconds(59);
-            var dtNow = DateTime.Now;
+            //var dtNow = DateTime.Now;
 
            
             IEnumerable<WeekendViewModel> weekendEvents = await dbContext
-                .Tickets 
+                .Tickets
+                .Where(t => t.isActive)
                 .Where(t => t.EventDate >= weekendStart && t.EventDate <= weekendEnd && t.EventDate > dtNow)
                 .Select(t => new WeekendViewModel()
                 {
