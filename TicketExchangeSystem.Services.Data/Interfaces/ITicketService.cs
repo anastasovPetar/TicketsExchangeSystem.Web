@@ -1,6 +1,5 @@
 ﻿namespace TicketsExchangeSystem.Services.Data.Interfaces
 {
-    using TicketsExchangeSystem.Web.ViewModels.Home;
     using TicketsExchangeSystem.Web.ViewModels.Ticket;
 
     public interface ITicketService

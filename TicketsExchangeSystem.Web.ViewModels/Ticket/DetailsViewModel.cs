@@ -1,6 +1,5 @@
-﻿namespace TicketsExchangeSystem.Web.ViewModels.Home
+﻿namespace TicketsExchangeSystem.Web.ViewModels.Ticket
 {
-    
     public class DetailsViewModel
     {
         public string Id { get; set; } = null!;
@@ -12,7 +11,7 @@
         public string City { get; set; } = null!;
 
         public string PlaceOfEvent { get; set; } = null!;
-        
+
         public string? Addres1 { get; set; }
 
         public string? Addres2 { get; set; }

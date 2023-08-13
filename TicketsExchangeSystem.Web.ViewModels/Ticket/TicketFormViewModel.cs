@@ -3,9 +3,9 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel;
 
+    using static TicketsEchangeSystem.Common.ValidationConstantsForEntities.Ticket;
     using TicketsExchangeSystem.Web.ViewModels.Category;
     using TicketsExchangeSystem.Web.ViewModels.Currency;
-    using static TicketsEchangeSystem.Common.ValidationConstantsForEntities.Ticket;
     using TicketsEchangeSystem.Common;
 
     public class TicketFormViewModel 

@@ -31,8 +31,6 @@
 
        flatpickr(".datepicker", configFlatpickr);
 
-        //let eventDateTime = flatpickr(document.getElementById('EventDate'), configFlatpickr);
-
         $('#form1').submit((e) => {
             $('#EventDate').val(eventDateTime.latestSelectedDateObj.toLocaleString());
         });

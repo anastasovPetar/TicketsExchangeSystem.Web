@@ -8,7 +8,6 @@
 
     using TicketsExchangeSystem.Services.Data.Interfaces;
     using TicketsExchangeSystem.Data;
-    using TicketsExchangeSystem.Web.ViewModels.Home;
     using TicketsExchangeSystem.Data.Models;
     using TicketsExchangeSystem.Web.ViewModels.Ticket;
 
@@ -83,9 +82,10 @@
 
         public async Task<DetailsViewModel> GetDetailsByIdAsysnc(string ticketId)
         {
-            //IEnumerable<DetailsViewModel> detailsModel = await this.dbContext
-            //    .Tickets
-            //    .Where(t => t.Id.ToString() == ticketId)
+            Ticket ticket = await dbContext
+                .Tickets
+                .Where(t => t.isActive)
+                .FirstOrDefaultAsync(t => t.Id.ToString() == ticketId);
             //    .Select(t => new DetailsViewModel()
             //    {
             //        Id = t.Id.ToString(),
@@ -100,24 +100,15 @@
             //        Currency = t.Currency.CurrencyCode,
             //        Category = t.Category.Name
             //    })
-            //    .ToArrayAsync();
+            //.ToListAsync();
 
-            Ticket ticket = await dbContext
-                .Tickets
-                .Include(t => t.Quantity)
-                //.Include(t => t.PricePerTicket)
-                //.ThenInclude(c => c.Currency)
-                .Include(c => c.Category)
-                .OrderBy(t => t.EventDate)
-                .FirstAsync(t => t.Id.ToString() == ticketId);
 
-            //Ticket ticket = await dbContext
-            //    .Tickets
-            //    .FirstAsync(t => t.Id.ToString() == ticketId);
+
+           
 
             return new DetailsViewModel()
             {
-                Id = ticket.Id.ToString(),
+                
                 Title = ticket.Title,
                 Country = ticket.Country,
                 City = ticket.City,
@@ -129,6 +120,8 @@
                 Currency = ticket.Currency.CurrencyCode,
                 Category = ticket.Category.Name,
             };
+
+
         }
 
         public async Task<bool> ExistsByIdAsync(string ticketId)

@@ -3,10 +3,10 @@
     using AspNetCoreHero.ToastNotification.Abstractions;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using TicketsExchangeSystem.Data.Models;
+
     using TicketsExchangeSystem.Services.Data.Interfaces;
-    using TicketsExchangeSystem.Web.Infrastructure.Extentions;
-    using TicketsExchangeSystem.Web.ViewModels.Ticket;
+    using Infrastructure.Extentions;
+    using ViewModels.Ticket;
 
     [Authorize]
     public class TicketController : Controller
@@ -27,6 +27,50 @@
             this.sellerService = sellerService;
             this.notyf = notyf;
             this.ticketService = ticketService;
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> Today()
+        {
+            IEnumerable<TodayViewModel> viewModel = await ticketService.GetTodayEventAsync();
+
+            return View(viewModel);
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> Weekend()
+        {
+            IEnumerable<WeekendViewModel> viewModel = await ticketService.GetWeekendEventsAsync();
+
+            return View(viewModel);
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> Custom()
+        {
+            // return View();
+            return Ok();
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> Details(string id)
+        {
+            bool exists = await ticketService.ExistsByIdAsync(id);
+
+            if (!exists)
+            {
+                notyf.Error("This ticket does not exists!");
+
+                return RedirectToAction("Index", "Home");
+            }
+
+            DetailsViewModel viewModel = await ticketService.GetDetailsByIdAsysnc(id);
+
+            return View(viewModel);
         }
 
         [HttpGet]
