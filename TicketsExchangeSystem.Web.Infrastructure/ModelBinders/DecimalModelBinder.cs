@@ -14,15 +14,15 @@
                 throw new ArgumentNullException(nameof(bindingContext));
             }
 
-            ValueProviderResult result = bindingContext.ValueProvider.GetValue(bindingContext.ModelName);
-            if (result != ValueProviderResult.None && !string.IsNullOrWhiteSpace(result.FirstValue))
+            ValueProviderResult valueResult = bindingContext.ValueProvider.GetValue(bindingContext.ModelName);
+            if (valueResult != ValueProviderResult.None && !string.IsNullOrWhiteSpace(valueResult.FirstValue))
             {
                 decimal parsedValue = 0m;
                 bool parseSuccess = false;
 
                 try
                 {
-                    string valueFromForm = result.FirstValue;
+                    string valueFromForm = valueResult.FirstValue;
                     valueFromForm = valueFromForm.Replace(",", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
                     valueFromForm = valueFromForm.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
 
@@ -32,12 +32,12 @@
                 catch (FormatException e)
                 {
 
-                    bindingContext.ModelState.AddModelError(bindingContext.ModelName, e, bindingContext.ModelMetadata);
+                    bindingContext.ModelState.AddModelError(bindingContext.ModelName, e, bindingContext.ModelMetadata);                   
+                }
 
-                    if (parseSuccess)
-                    {
-                        bindingContext.Result = ModelBindingResult.Success(parsedValue);
-                    }
+                if (parseSuccess)
+                {
+                    bindingContext!.Result = ModelBindingResult.Success(parsedValue);
                 }
             }
 

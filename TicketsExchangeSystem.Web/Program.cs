@@ -44,11 +44,11 @@ namespace TicketsExchangeSystem.Web
             });
 
             builder.Services
-                .AddControllersWithViews();
-                //.AddMvcOptions(options =>
-                //{
-                //    options.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
-                //});
+                .AddControllersWithViews()
+                .AddMvcOptions(options =>
+                {
+                    options.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
+                });
 
             builder.Services.AddScoped<ITicketService, TicketService>();
             builder.Services.AddScoped<IDateService, DateService>();
