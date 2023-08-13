@@ -9,6 +9,8 @@ namespace TicketsExchangeSystem.Web
 
     using AspNetCoreHero.ToastNotification;
     using AspNetCoreHero.ToastNotification.Extensions;
+    using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+    using TicketsExchangeSystem.Web.Infrastructure.ModelBinders;
 
     public class Program
     {
@@ -41,7 +43,12 @@ namespace TicketsExchangeSystem.Web
                 config.Position = NotyfPosition.TopRight;
             });
 
-            builder.Services.AddControllersWithViews();
+            builder.Services
+                .AddControllersWithViews()
+                .AddMvcOptions(options =>
+                {
+                    options.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
+                });
 
             builder.Services.AddScoped<ITicketService, TicketService>();
             builder.Services.AddScoped<IDateService, DateService>();
