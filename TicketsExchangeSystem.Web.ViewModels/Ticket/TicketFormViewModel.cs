@@ -53,7 +53,7 @@
         [Display(Name = "Quantity")]
         public int Quantity { get; set; }
 
-        //[Required]
+        [Required]
         [Display(Name = "Price per ticket")]
         [Range(typeof(decimal), PricePerTicketMinValue, PricePerTicketMaxValue)]
         public decimal PricePerTicket { get; set; }
