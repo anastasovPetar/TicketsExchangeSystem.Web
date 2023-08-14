@@ -2,9 +2,10 @@
 {
     public enum TicketSorting
     {
-        Country = 0,
-        City = 1,
-        PriceAsc = 2,
-        PriceDesc = 3
+        NewestFirst = 0,
+        Country = 1,
+        City = 2,
+        PriceAscending = 3,
+        PriceDescending = 4
     }
 }
