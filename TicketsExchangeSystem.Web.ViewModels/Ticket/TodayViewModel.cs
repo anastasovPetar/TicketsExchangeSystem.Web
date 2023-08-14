@@ -18,6 +18,5 @@
         public string? ImageUrl { get; set; }
 
         public DateTime EventDate { get; set; }
-
     }
 }

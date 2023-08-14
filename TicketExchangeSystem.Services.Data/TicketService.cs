@@ -10,6 +10,8 @@
     using TicketsExchangeSystem.Data;
     using TicketsExchangeSystem.Data.Models;
     using TicketsExchangeSystem.Web.ViewModels.Ticket;
+    using TicketsExchangeSystem.Services.Data.Models.Ticket;
+    using TicketsExchangeSystem.Web.ViewModels.Ticket.Enums;
 
     public class TicketService : ITicketService
     {
@@ -41,7 +43,9 @@
                     City = t.City,
                     PlaceOfEvent = t.PlaceOfEvent,
                     ImageUrl = (t.ImageUrl == null ? noImgPath : t.ImageUrl),
-                    EventDate = t.EventDate
+                    EventDate = t.EventDate,
+                    //Price = t.PricePerTicket,
+                    //CurencyName = t.CurrencyName,
                 })
                 .ToArrayAsync();
 
@@ -71,7 +75,7 @@
                     City = t.City,
                     PlaceOfEvent = t.PlaceOfEvent,
                     ImageUrl = (t.ImageUrl == null ? noImgPath : t.ImageUrl),
-                    EventDate = t.EventDate
+                    EventDate = t.EventDate,
                 })
                  .ToListAsync();
 
@@ -138,6 +142,73 @@
 
             await dbContext.Tickets.AddAsync(ticket);
             await dbContext.SaveChangesAsync();
+        }
+
+        public async Task<CustomSearchedAndPaginatedServiceModel> GetAllAsync(CustomTicketQueryModel queryModel)
+        {
+            IQueryable<Ticket> ticketsQuery = dbContext
+                .Tickets
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(queryModel.Category))
+            {
+                ticketsQuery = ticketsQuery
+                    .Where(t => t.Category.Name == queryModel.Category);
+            }
+
+            if (!string.IsNullOrWhiteSpace(queryModel.SearchString))
+            {
+                string search = $"%{queryModel.SearchString.ToLower()}%";
+                ticketsQuery = ticketsQuery
+                    .Where(t => EF.Functions.Like(t.Title, search) ||
+                                EF.Functions.Like(t.Country, search) ||
+                                EF.Functions.Like(t.City, search) ||
+                                EF.Functions.Like(t.PlaceOfEvent, search) ||
+                                EF.Functions.Like(t.Address1, search) ||
+                                EF.Functions.Like(t.Address2, search));
+            }
+
+            ticketsQuery = queryModel.TicketSorting switch
+            {
+                TicketSorting.NewestFirst => ticketsQuery.OrderBy(t => t.CreatedOn),
+
+                TicketSorting.Country => ticketsQuery.OrderBy(t => t.Country),
+
+                TicketSorting.City => ticketsQuery.OrderBy(t => t.City),
+
+                TicketSorting.QuantityAsc => ticketsQuery.OrderBy(t => t.Quantity),
+
+                TicketSorting.QuantityDesc => ticketsQuery.OrderByDescending(t => t.Quantity)
+            };
+
+            IEnumerable<CustomSearchViewModel> customSearchedTicket = await ticketsQuery
+                .Skip((queryModel.CurrentPage - 1) * queryModel.PerPage)
+                .Take(queryModel.PerPage)
+                .Select(t => new CustomSearchViewModel()
+                {
+                    Id = t.Id.ToString(),
+                    Title = t.Title,
+                    Country = t.Country,
+                    City  = t.City,
+                    Address1 = t.Address1,
+                    Address2 = t.Address2,
+                    PlaceOfEvent = t.PlaceOfEvent,
+                    ImageUrl = (t.ImageUrl == null ? noImgPath : t.ImageUrl),
+                    Quantity = t.Quantity,
+                    EventDate = t.EventDate,
+                    PricePerTicket = t.PricePerTicket,
+                    TicketCurrency = t.Currency.CurrencyCode,
+                    TicketCategory = t.Category.Name
+                })
+                .ToArrayAsync();
+
+            int totalTickets = ticketsQuery.Count();
+
+            return new CustomSearchedAndPaginatedServiceModel()
+            {
+                TotalTicketsCount = totalTickets,
+                Tickets = customSearchedTicket
+            };
         }
     }
 }

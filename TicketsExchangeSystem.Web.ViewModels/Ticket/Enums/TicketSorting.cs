@@ -5,7 +5,7 @@
         NewestFirst = 0,
         Country = 1,
         City = 2,
-        PriceAscending = 3,
-        PriceDescending = 4
+        QuantityAsc = 3,
+        QuantityDesc = 4
     }
 }

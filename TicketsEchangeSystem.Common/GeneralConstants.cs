@@ -8,6 +8,6 @@
 
         public const int DefaultPage = 1;
 
-        public const int PerPage = 4;
+        public const int ItemsPerPage = 5;
     }
 }

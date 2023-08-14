@@ -21,6 +21,7 @@
     <ProjectReference Include="..\TicketsEchangeSystem.Common\TicketsEchangeSystem.Common.csproj" />
     <ProjectReference Include="..\TicketsExchangeSystem.Data.Models\TicketsExchangeSystem.Data.Models.csproj" />
     <ProjectReference Include="..\TicketsExchangeSystem.Data\TicketsExchangeSystem.Data.csproj" />
+    <ProjectReference Include="..\TicketsExchangeSystem.Services.Data.Models\TicketsExchangeSystem.Services.Data.Models.csproj" />
     <ProjectReference Include="..\TicketsExchangeSystem.Web.Infrastructure\TicketsExchangeSystem.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\TicketsExchangeSystem.Web.ViewModels\TicketsExchangeSystem.Web.ViewModels.csproj" />
   </ItemGroup>

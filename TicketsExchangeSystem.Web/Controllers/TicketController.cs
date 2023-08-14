@@ -7,6 +7,7 @@
     using TicketsExchangeSystem.Services.Data.Interfaces;
     using Infrastructure.Extentions;
     using ViewModels.Ticket;
+    using TicketsExchangeSystem.Services.Data.Models.Ticket;
 
     [Authorize]
     public class TicketController : Controller
@@ -51,10 +52,16 @@
         //TO BE FIXED
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> Custom()
+        public async Task<IActionResult> Custom([FromQuery]CustomTicketQueryModel queryModel)
         {
-            // return View();
-            return Ok();
+            CustomSearchedAndPaginatedServiceModel serviceModel =
+                await ticketService.GetAllAsync(queryModel);
+
+            queryModel.Tickets = serviceModel.Tickets;
+            queryModel.TotalTickets = serviceModel.TotalTicketsCount;
+            queryModel.Categories = await categoryService.AllCategoriesNamesAsync();
+
+            return View(queryModel);
         }
 
         [AllowAnonymous]

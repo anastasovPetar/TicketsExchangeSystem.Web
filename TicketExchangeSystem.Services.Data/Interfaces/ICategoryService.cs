@@ -6,5 +6,7 @@
         Task<IEnumerable<TicketSelectCategoryFormModel>> GetAllCategoriesAsync();
 
         Task<bool> ExistsByIdAsync(int id);
+
+        Task<IEnumerable<string>> AllCategoriesNamesAsync();
     }
 }
