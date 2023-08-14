@@ -6,7 +6,7 @@
     {
         Task<IEnumerable<TodayViewModel>> GetTodayEventAsync();
         Task<IEnumerable<WeekendViewModel>> GetWeekendEventsAsync();
-        Task<DetailsViewModel> GetDetailsByIdAsysnc(string ticketId);
+        Task<IEnumerable<DetailsViewModel>> GetDetailsByIdAsysnc(string ticketId);
         Task<bool> ExistsByIdAsync(string ticketId);
         Task CreateAsync(TicketFormViewModel formViewModel, string sellerId);
     }

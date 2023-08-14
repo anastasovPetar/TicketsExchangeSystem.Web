@@ -47,6 +47,8 @@
             return View(viewModel);
         }
 
+
+        //TO BE FIXED
         [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Custom()
@@ -68,7 +70,7 @@
                 return RedirectToAction("Index", "Home");
             }
 
-            DetailsViewModel viewModel = await ticketService.GetDetailsByIdAsysnc(id);
+            DetailsViewModel viewModel = (DetailsViewModel)await ticketService.GetDetailsByIdAsysnc(id);
 
             return View(viewModel);
         }
