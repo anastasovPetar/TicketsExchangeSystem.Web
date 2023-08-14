@@ -170,7 +170,7 @@
 
             ticketsQuery = queryModel.TicketSorting switch
             {
-                TicketSorting.NewestFirst => ticketsQuery.OrderBy(t => t.CreatedOn),
+                TicketSorting.NewestFirst => ticketsQuery.OrderByDescending(t => t.CreatedOn),
 
                 TicketSorting.Country => ticketsQuery.OrderBy(t => t.Country),
 
