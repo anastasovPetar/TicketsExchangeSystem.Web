@@ -2,7 +2,7 @@
 
 
 <div class="col-md-4">
-    <div class="card cborder-danger mb-3">
+    <div class="card  mb-3 shadow-lg border-bottom border-danger">
         <img class="card-img-top" src="@Model.ImageUrl" alt="Ticket image">
         <div class="card-body text-center">
             <h4>@Model.Title</h4>
@@ -11,12 +11,16 @@
                 Place: <b>@Model.Country</b>, <b>@Model.City</b>, <b>@Model.PlaceOfEvent</b>
             </h6>
             <h6>
+                <i class="bi bi-calendar-plus me-2"></i>
+                Start on: <b> @Model.EventDate.ToShortDateString(), @Model.EventDate.ToShortTimeString() h</b>
+            </h6>
+            <h6>
                 <i class="bi bi-infinity me-2"></i>
                 Quantity: <b> @Model.Quantity</b>
             </h6>
             <h6>
                 <i class="bi bi-wallet-fill me-2"></i>
-                Price: <b> @Model.TicketCurrency</b>
+                Price: @Model.PricePerTicket <b>@Model.TicketCurrency</b>
             </h6>
             <br />
             <a asp-controller="Tickets" asp-action="Details" asp-route-id="@Model.Id"
@@ -27,7 +31,7 @@
                 <a asp-controller="Ticket" asp-action="Edit" asp-route-id="@Model.Id"
                    class="btn btn-outline-warning">Edit</a>
 
-                <a asp-controller="Ticket" asp-action="Delete" asp-routeid="@Model.Id"
+                <a asp-controller="Ticket" asp-action="Delete" asp-route-id="@Model.Id"
                    class="btn btn-outline-danger">Delete</a>
                 <p></p>
 
