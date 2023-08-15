@@ -1,15 +1,31 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using TicketsExchangeSystem.Data.Models;
+@using TicketsExchangeSystem.Services.Data.Interfaces;
+@using TicketsExchangeSystem.Web.Infrastructure.Extentions;
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
+@inject ISellerService SellerService
+
+@{
+    bool isSeller = await SellerService.SellerExistsByUserIdAsync(this.User.GetId()!);
+}
 
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
-    {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Seller" asp-action="BecomeSeller">Sell tickets!</a>
-        </li>
+    {  
+        @if (isSeller)
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Ticket" asp-action="Own">My tickets</a>
+            </li>
+        }else
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Seller" asp-action="BecomeSeller">Sell tickets!</a>
+            </li>
+        }
+
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
         </li>

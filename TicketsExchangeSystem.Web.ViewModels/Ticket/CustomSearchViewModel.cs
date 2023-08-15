@@ -25,12 +25,10 @@ namespace TicketsExchangeSystem.Web.ViewModels.Ticket
         [DisplayName("Place")]
         public string PlaceOfEvent { get; set; } = null!;
 
-
         [Display(Name ="Image link")]
         public string? ImageUrl { get; set; }
 
         public int Quantity { get; set; }
-
         
         public DateTime EventDate { get; set; }
 

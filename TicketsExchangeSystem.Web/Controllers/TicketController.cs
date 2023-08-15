@@ -17,7 +17,7 @@
         private readonly ISellerService sellerService;
         private readonly INotyfService notyf;
         private readonly ITicketService ticketService;
-        public TicketController(ICategoryService categoryService, 
+        public TicketController(ICategoryService categoryService,
                                 ICurrencyService currencyService,
                                 ISellerService sellerService,
                                 INotyfService notyf,
@@ -52,7 +52,7 @@
         //TO BE FIXED
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> Custom([FromQuery]CustomTicketQueryModel queryModel)
+        public async Task<IActionResult> Custom([FromQuery] CustomTicketQueryModel queryModel)
         {
             CustomSearchedAndPaginatedServiceModel serviceModel =
                 await ticketService.GetAllAsync(queryModel);
@@ -161,7 +161,7 @@
 
 
             if (!ModelState.IsValid)
-            { 
+            {
                 try
                 {
                     model.Categories = await categoryService.GetAllCategoriesAsync();
@@ -189,8 +189,8 @@
                 model.Currencies = await currencyService.GetAllCurrenciesAsync();
 
                 return View(model);
-            }   
-            
+            }
+
             return RedirectToAction("Details", "Ticket");
         }
 
@@ -198,6 +198,27 @@
         public async Task<IActionResult> Details()
         {
             return Ok();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Own()
+        {
+            string userId = this.User.GetId()!;
+            bool isSeller = await sellerService.SellerExistsByUserIdAsync(userId!);
+            List<CustomSearchViewModel> ownTickets = new List<CustomSearchViewModel>();
+
+            if (isSeller)
+            {
+                string? sellertId = await sellerService.GetRegisteredSellerIdFromUserIdAsync(userId!);
+                ownTickets.AddRange(await ticketService.GetAllBySellerIdAsync(sellertId!));
+            }
+            else
+            {
+                notyf.Error("You must be a seller to have oun tickets! We are going to redirect you.");
+
+                return RedirectToAction("BecomeSeller", "Seller");
+            }
+            return View(ownTickets);
         }
     }
 }

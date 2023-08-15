@@ -164,8 +164,8 @@
                                 EF.Functions.Like(t.Country, search) ||
                                 EF.Functions.Like(t.City, search) ||
                                 EF.Functions.Like(t.PlaceOfEvent, search) ||
-                                EF.Functions.Like(t.Address1, search) ||
-                                EF.Functions.Like(t.Address2, search));
+                                EF.Functions.Like(t.Address1!, search) ||
+                                EF.Functions.Like(t.Address2!, search));
             }
 
             ticketsQuery = queryModel.TicketSorting switch
@@ -182,6 +182,7 @@
             };
 
             IEnumerable<CustomSearchViewModel> customSearchedTicket = await ticketsQuery
+                .Where(t => t.isActive)
                 .Skip((queryModel.CurrentPage - 1) * queryModel.PerPage)
                 .Take(queryModel.PerPage)
                 .Select(t => new CustomSearchViewModel()
@@ -209,6 +210,37 @@
                 TotalTicketsCount = totalTickets,
                 Tickets = customSearchedTicket
             };
+        }
+
+        public async Task<IEnumerable<CustomSearchViewModel>> GetAllBySellerIdAsync(string sellerid)
+        {
+            IEnumerable<CustomSearchViewModel> allSellersTickets = await dbContext
+                .Tickets
+                .Where(t => t.SellerId.ToString() == sellerid)
+                .Select(t => new CustomSearchViewModel
+                {
+                    Id = t.Id.ToString(),
+                    Title = t.Title,
+                    Country = t.Country,
+                    City = t.City,
+                    Address1 = t.Address1,
+                    Address2 = t.Address2,
+                    PlaceOfEvent = t.PlaceOfEvent,
+                    ImageUrl = (t.ImageUrl == null ? noImgPath : t.ImageUrl),
+                    Quantity = t.Quantity,
+                    EventDate = t.EventDate,
+                    PricePerTicket = t.PricePerTicket,
+                    TicketCurrency = t.Currency.CurrencyCode,
+                    TicketCategory = t.Category.Name
+                })
+                .ToArrayAsync();
+
+            return allSellersTickets;
+        }
+
+        public Task<IEnumerable<CustomSearchViewModel>> GetFavoritesBeUserIdAsync(string userId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

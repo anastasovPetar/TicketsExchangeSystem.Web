@@ -1,0 +1,31 @@
+﻿@model IEnumerable<CustomSearchViewModel>
+
+@{
+    ViewBag.Title = "Tickets I have registered.";
+}
+
+<div class="container">
+    <div class="d-grid gap-2 text-center my-3">
+        <div>
+            <h1 class="display-4 mt-4"> @ViewBag.Title</h1>
+        </div>
+    </div>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="container">
+        <div class="d-grid gap-2 text-center my-3">
+            <div>
+                <h2 class="display-4 mt-4"> Your list is empty.</h2>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="row">
+    @foreach (var ticket in Model)
+    {
+        <partial name="_TicketPartial" model="@ticket" />
+    }
+</div>

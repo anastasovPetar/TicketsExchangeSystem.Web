@@ -11,5 +11,7 @@
         Task<bool> ExistsByIdAsync(string ticketId);
         Task CreateAsync(TicketFormViewModel formViewModel, string sellerId);
         Task<CustomSearchedAndPaginatedServiceModel> GetAllAsync(CustomTicketQueryModel queryModel);
+        Task<IEnumerable<CustomSearchViewModel>> GetAllBySellerIdAsync(string sellerId);
+        Task<IEnumerable<CustomSearchViewModel>> GetFavoritesBeUserIdAsync(string userId);
     }
 }
