@@ -24,12 +24,13 @@
             <p>City: <b>@Model.City</b></p>
             <p>Place: <b>@Model.PlaceOfEvent</b></p>
             <p>On: <b>@Model.EventDate.ToShortDateString()</b></p>
-            <p>At: <b>@Model.EventDate.ToShortTimeString() h</b></p>
+            <p>Start at: <b>@Model.EventDate.ToShortTimeString() h</b></p>
 
             <p>Address: <b>@Model.Addres1</b></p>
 
             <p>Address: <b>@Model.Addres2</b></p>
-            <p>Price: <b> @($"{@Model.PricePerTicket:f2}") @Model.TicketCurrency</b>            </p>           
+
+            <p>Price: <b> @($"{@Model.PricePerTicket:f2}") @Model.TicketCurrency</b> </p>           
             
             <p>Available: <b>(@(Model.Quantity > 0 ? $"{@Model.Quantity} ticket/s" : "Оut of stock"))</b></p>
             <div class="form-inline">
