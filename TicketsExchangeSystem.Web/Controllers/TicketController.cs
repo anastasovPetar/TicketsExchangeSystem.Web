@@ -8,6 +8,7 @@
     using Infrastructure.Extentions;
     using ViewModels.Ticket;
     using TicketsExchangeSystem.Services.Data.Models.Ticket;
+    using TicketsExchangeSystem.Data.Models;
 
     [Authorize]
     public class TicketController : Controller
@@ -62,24 +63,6 @@
             queryModel.Categories = await categoryService.AllCategoriesNamesAsync();
 
             return View(queryModel);
-        }
-
-        [AllowAnonymous]
-        [HttpGet]
-        public async Task<IActionResult> Details(string id)
-        {
-            bool exists = await ticketService.ExistsByIdAsync(id);
-
-            if (!exists)
-            {
-                notyf.Error("This ticket does not exists!");
-
-                return RedirectToAction("Index", "Home");
-            }
-
-            DetailsViewModel viewModel = (DetailsViewModel)await ticketService.GetDetailsByIdAsysnc(id);
-
-            return View(viewModel);
         }
 
         [HttpGet]
@@ -195,12 +178,6 @@
         }
 
         [HttpGet]
-        public async Task<IActionResult> Details()
-        {
-            return Ok();
-        }
-
-        [HttpGet]
         public async Task<IActionResult> Own()
         {
             string userId = this.User.GetId()!;
@@ -219,6 +196,26 @@
                 return RedirectToAction("BecomeSeller", "Seller");
             }
             return View(ownTickets);
+        }
+
+
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> Details(string id)
+        {
+            TicketDetailsViewModel viewModel = new TicketDetailsViewModel() { };
+            try
+            {
+                viewModel = await ticketService.GetDetailsByIdAsysnc(id);
+            }
+            catch (Exception)
+            {
+                notyf.Error("The ticket does not exists!");
+
+                return RedirectToAction("Index", "Home");
+            }            
+
+            return View(viewModel);
         }
     }
 }

@@ -5,25 +5,29 @@
     <div class="card  mb-3 shadow-lg border-bottom border-danger" >
         <img class="card-img-top" src="@Model.ImageUrl" alt="Ticket image">
         <div class="card-body text-center">
-            <h4>@Model.Title</h4>
-            <h6> 
+            <h4 class="my-3">@Model.Title</h4>
+            <h6 class="my-3"> 
                 <i class="bi bi-geo-alt-fill me-2"></i> 
                 Place: <b>@Model.Country</b>, <b>@Model.City</b>, <b>@Model.PlaceOfEvent</b>
             </h6>
-            <h6>
+@*            <h6 class="my-2">
+                <i class="bi bi-check-all me-2"></i>
+                Category: <b> @Model.TicketCategory</b>
+            </h6>*@
+            <h6 class="my-2">
                 <i class="bi bi-calendar-plus me-2"></i>
                 Start on: <b> @Model.EventDate.ToShortDateString(), @Model.EventDate.ToShortTimeString() h</b>
             </h6>
-            <h6>
+            <h6 class="my-2">
                 <i class="bi bi-infinity me-2"></i>
                 Quantity: <b> @Model.Quantity</b>
             </h6>
-            <h6>
+            <h6 class="my-2">
                 <i class="bi bi-wallet-fill me-2"></i>
                 Price: @Model.PricePerTicket <b>@Model.TicketCurrency</b>
             </h6>
             <br />
-            <a asp-controller="Tickets" asp-action="Details" asp-route-id="@Model.Id"
+            <a asp-controller="Ticket" asp-action="Details" asp-route-id="@Model.Id"
                class="btn btn-outline-primary">Details</a>
 
             @if (this.User.Identity?.IsAuthenticated ?? false)
@@ -37,15 +41,10 @@
 
 
                 <form class="input-group-sm" asp-controller="Ticket" asp-action="Buy" asp-route-id="@Model.Id" method="post">
-                    @if (Model.Quantity > 0)
-                    {
-                        <input class="btn btn-outline-primary" type="submit" value="Buy" />
-                    }
-                    else
-                    {
-                        <input class="btn btn-outline-primary" type="submit" value="Buy" disabled />
-                    }
-                </form>
+
+                    <input class="btn btn-outline-primary" type="submit" value="Buy" @(Model.Quantity == 0 ? "disabled" : "")  />
+                  
+                </form> 
             }
         </div>
     </div>

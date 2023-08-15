@@ -82,32 +82,7 @@
 
             return weekendEvents;
         }
-
-        //TO BE FIXED
-        public async Task<IEnumerable<DetailsViewModel>> GetDetailsByIdAsysnc(string ticketId)
-        {
-            IEnumerable<DetailsViewModel> ticket = await dbContext
-                .Tickets
-                .Where(t => t.isActive)
-                .Where(t => t.Id.ToString() == ticketId)
-                .Select(t => new DetailsViewModel()
-                {
-                    Id = t.Id.ToString(),
-                    Title = t.Title,
-                    Country = t.Country,
-                    City = t.City,
-                    PlaceOfEvent = t.PlaceOfEvent,
-                    ImageUrl = (t.ImageUrl == null ? noImgPath : t.ImageUrl),
-                    EventDate = t.EventDate,
-                    Quantity = t.Quantity,
-                    PricePerTicket = t.PricePerTicket,
-                    //Currency = t.Currency.CurrencyCode,
-                    //Category = t.Category.Name
-                })
-            .ToListAsync();
-
-            return ticket;           
-        }
+                
 
         public async Task<bool> ExistsByIdAsync(string ticketId)
         {
@@ -191,15 +166,12 @@
                     Title = t.Title,
                     Country = t.Country,
                     City  = t.City,
-                    Address1 = t.Address1,
-                    Address2 = t.Address2,
                     PlaceOfEvent = t.PlaceOfEvent,
                     ImageUrl = (t.ImageUrl == null ? noImgPath : t.ImageUrl),
                     Quantity = t.Quantity,
                     EventDate = t.EventDate,
                     PricePerTicket = t.PricePerTicket,
-                    TicketCurrency = t.Currency.CurrencyCode,
-                    TicketCategory = t.Category.Name
+                    TicketCurrency = t.Currency.CurrencyCode
                 })
                 .ToArrayAsync();
 
@@ -223,15 +195,12 @@
                     Title = t.Title,
                     Country = t.Country,
                     City = t.City,
-                    Address1 = t.Address1,
-                    Address2 = t.Address2,
                     PlaceOfEvent = t.PlaceOfEvent,
                     ImageUrl = (t.ImageUrl == null ? noImgPath : t.ImageUrl),
                     Quantity = t.Quantity,
                     EventDate = t.EventDate,
                     PricePerTicket = t.PricePerTicket,
-                    TicketCurrency = t.Currency.CurrencyCode,
-                    TicketCategory = t.Category.Name
+                    TicketCurrency = t.Currency.CurrencyCode
                 })
                 .ToArrayAsync();
 
@@ -241,6 +210,33 @@
         public Task<IEnumerable<CustomSearchViewModel>> GetFavoritesBeUserIdAsync(string userId)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<TicketDetailsViewModel> GetDetailsByIdAsysnc(string ticketId)
+        {
+            Ticket ticket = await dbContext
+                .Tickets                
+                .Include(t => t.Currency)
+                .Include(t => t.Category)
+                .Where(t => t.isActive)
+                .FirstAsync(t => t.Id.ToString() == ticketId);
+
+            return new TicketDetailsViewModel()
+            {
+                Id = ticket.Id.ToString(),
+                Title = ticket.Title,
+                Country = ticket.Country,
+                City = ticket.City,
+                Addres1 = ticket.Address1,
+                Addres2 = ticket.Address2,
+                PlaceOfEvent = ticket.PlaceOfEvent,
+                ImageUrl = (ticket.ImageUrl == null ? noImgPath : ticket.ImageUrl),
+                Quantity = ticket.Quantity,
+                EventDate = ticket.EventDate,
+                PricePerTicket = ticket.PricePerTicket,
+                TicketCurrency = ticket.Currency.CurrencyCode,
+                TicketCategory = ticket.Category.Name
+            };
         }
     }
 }

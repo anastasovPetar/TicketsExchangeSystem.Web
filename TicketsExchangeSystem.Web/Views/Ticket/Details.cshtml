@@ -1,27 +1,76 @@
-﻿@model DetailsViewModel;
+﻿@model TicketDetailsViewModel;
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Model.Title;
 }
 
 <div class="container">
     <div class="d-grid gap-2 text-center">
         <div>
-            <h1 class="display-4 mt-4">Details for the event</h1>
-        </div>
-        <div>
-            <h4>You can order your ticket here.</h4>
+            <h1 class="display-4 mt-4"><u>@ViewData["Title"] </u></h1>
         </div>
     </div>
 </div>
 
-@*PRODUCT*@
-<div class="container py-5">
-    <img src=@Model.ImageUrl class="card-img-top" alt="ticket image">
-    <div class="card-body">
-        <h5 class="card-title">Card title</h5>
-        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+<div class="container" style="display:inline">
+    <div class="row">
+        <div class="col-4">
+            <img class="card-img-top" style="width: 20rem;" src="@Model.ImageUrl" alt="ticket image">
+        </div>
+        <div class="card col-8 border-0">
+            <p>Category: <b>@Model.TicketCategory</b></p>
+
+            <p>Country: <b> @Model.Country </b></p>
+            <p>City: <b>@Model.City</b></p>
+            <p>Place: <b>@Model.PlaceOfEvent</b></p>
+            <p>On: <b>@Model.EventDate.ToShortDateString()</b></p>
+            <p>At: <b>@Model.EventDate.ToShortTimeString() h</b></p>
+
+            <p>Address: <b>@Model.Addres1</b></p>
+
+            <p>Address: <b>@Model.Addres2</b></p>
+            <p>Price: <b> @($"{@Model.PricePerTicket:f2}") @Model.TicketCurrency</b>            </p>           
+            
+            <p>Available: <b>(@(Model.Quantity > 0 ? $"{@Model.Quantity} ticket/s" : "Оut of stock"))</b></p>
+            <div class="form-inline">
+                @if (this.User?.Identity?.IsAuthenticated ?? false)
+                {
+                    <a class="btn btn-outline-warning" asp-controller="House" asp-action="Edit"
+                       asp-route-id="@Model.Id">Edit</a>
+
+                    <a class="ml-2 btn btn-outline-danger" asp-controller="House" asp-action="Delete"
+                       asp-route-id="@Model.Id">Delete</a>
+
+                    <a class="ml-2 btn btn-outline-success" asp-controller="Ticket" asp-action="Custom">Back</a>
+                          
+
+                       @if (Model.Quantity > 0)
+                    {
+                        
+                    }
+
+                   @* @if (!Model.IsRented)
+                    {
+                        <form class="ml-2" asp-controller="House"
+                              asp-action="Rent" asp-route-id="@Model.Id"
+                              method="post">
+                            <input class="btn btn-primary" type="submit"
+                                   value="Rent" />
+                        </form>
+                    }
+                    else
+                    {
+                        <form class="ml-2" asp-controller="House" asp-action="Leave"
+                              asp-route-id="@Model.Id" method="post">
+                            <input class="btn btn-primary" type="submit"
+                                   value="Leave" />
+                        </form>
+                }*@
+                }
+            </div>
+            <p></p>
+        </div>
     </div>
 </div>
+
 
