@@ -17,6 +17,9 @@
         @if (isSeller)
         {
             <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Ticket" asp-action="Add">Add ticket</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-controller="Ticket" asp-action="Own">My tickets</a>
             </li>
         }else
