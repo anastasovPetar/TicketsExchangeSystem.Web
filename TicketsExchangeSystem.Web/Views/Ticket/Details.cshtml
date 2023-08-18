@@ -42,31 +42,8 @@
                     <a class="ml-2 btn btn-outline-danger" asp-controller="House" asp-action="Delete"
                        asp-route-id="@Model.Id">Delete</a>
 
-                    <a class="ml-2 btn btn-outline-success" asp-controller="Ticket" asp-action="Custom">Back</a>
-                          
-
-                       @if (Model.Quantity > 0)
-                    {
-                        
-                    }
-
-                   @* @if (!Model.IsRented)
-                    {
-                        <form class="ml-2" asp-controller="House"
-                              asp-action="Rent" asp-route-id="@Model.Id"
-                              method="post">
-                            <input class="btn btn-primary" type="submit"
-                                   value="Rent" />
-                        </form>
-                    }
-                    else
-                    {
-                        <form class="ml-2" asp-controller="House" asp-action="Leave"
-                              asp-route-id="@Model.Id" method="post">
-                            <input class="btn btn-primary" type="submit"
-                                   value="Leave" />
-                        </form>
-                }*@
+                    <a class="ml-2 btn btn-outline-success" asp-controller="Ticket" asp-action="Custom">Back</a>         
+                  
                 }
             </div>
             <p></p>

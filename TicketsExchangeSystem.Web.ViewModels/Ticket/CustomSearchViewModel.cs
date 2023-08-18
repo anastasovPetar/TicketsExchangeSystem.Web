@@ -27,5 +27,11 @@ namespace TicketsExchangeSystem.Web.ViewModels.Ticket
         public decimal PricePerTicket { get; set; }
 
         public string TicketCurrency { get; set; } = null!;
+
+
+        public string TicketCategory { get; set; } = null!;
+
+        public string SellerId { get; set; }
+
     }
 }

@@ -191,7 +191,7 @@
             }
             else
             {
-                notyf.Error("You must be a seller to have oun tickets! We are going to redirect you.");
+                notyf.Error("You must be a seller to have own tickets! We are going to redirect you.");
 
                 return RedirectToAction("BecomeSeller", "Seller");
             }

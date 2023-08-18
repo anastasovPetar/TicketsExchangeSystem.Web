@@ -1,4 +1,14 @@
-﻿@model CustomSearchViewModel
+﻿@using TicketsExchangeSystem.Services.Data.Interfaces;
+@using TicketsExchangeSystem.Web.Infrastructure.Extentions;
+@model CustomSearchViewModel
+
+
+
+@inject ISellerService SellerService
+
+@{
+    bool isOwner = await SellerService.IsOwnerOfTicketByUserIdAsync(this.User.GetId()!, @Model.Id.ToString());
+}
 
 
 <div class="col-md-4">
@@ -10,10 +20,10 @@
                 <i class="bi bi-geo-alt-fill me-2"></i> 
                 Place: <b>@Model.Country</b>, <b>@Model.City</b>, <b>@Model.PlaceOfEvent</b>
             </h6>
-@*            <h6 class="my-2">
+            <h6 class="my-2">
                 <i class="bi bi-check-all me-2"></i>
                 Category: <b> @Model.TicketCategory</b>
-            </h6>*@
+            </h6>
             <h6 class="my-2">
                 <i class="bi bi-calendar-plus me-2"></i>
                 Start on: <b> @Model.EventDate.ToShortDateString(), @Model.EventDate.ToShortTimeString() h</b>
@@ -32,20 +42,23 @@
 
             @if (this.User.Identity?.IsAuthenticated ?? false)
             {
-                <a asp-controller="Ticket" asp-action="Edit" asp-route-id="@Model.Id"
-                   class="btn btn-outline-warning">Edit</a>
+                @if (isOwner) //send id
+                {
+                    <a asp-controller="Ticket" asp-action="Edit" asp-route-id="@Model.Id"
+                       class="btn btn-outline-warning">Edit</a>
 
-                <a asp-controller="Ticket" asp-action="Delete" asp-route-id="@Model.Id"
-                   class="btn btn-outline-danger">Delete</a>
-                <p></p>
+                    <a asp-controller="Ticket" asp-action="Delete" asp-route-id="@Model.Id"
+                       class="btn btn-outline-danger">Delete</a>
+                    <p></p>
+                }               
 
+            }
 
-                <form class="input-group-sm" asp-controller="Ticket" asp-action="Buy" asp-route-id="@Model.Id" method="post">
+                <form class="input-group-sm my-3" asp-controller="Ticket" asp-action="Buy" asp-route-id="@Model.Id" method="post">
 
                     <input class="btn btn-outline-primary" type="submit" value="Buy" @(Model.Quantity == 0 ? "disabled" : "")  />
                   
                 </form> 
-            }
         </div>
     </div>
 </div>

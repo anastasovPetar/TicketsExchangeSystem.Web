@@ -9,5 +9,7 @@ namespace TicketsExchangeSystem.Services.Data.Interfaces
         Task Create(string userId, BecomeSellerFormModel model);
 
         Task<string?> GetRegisteredSellerIdFromUserIdAsync(string userId);
+
+        Task<bool> IsOwnerOfTicketByUserIdAsync(string userId, string ticketId);
     }
 }

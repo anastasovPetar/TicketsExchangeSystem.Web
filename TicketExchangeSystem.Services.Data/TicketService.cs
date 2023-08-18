@@ -171,7 +171,9 @@
                     Quantity = t.Quantity,
                     EventDate = t.EventDate,
                     PricePerTicket = t.PricePerTicket,
-                    TicketCurrency = t.Currency.CurrencyCode
+                    TicketCurrency = t.Currency.CurrencyCode,
+                    TicketCategory = t.Category.Name,
+                    SellerId = t.SellerId.ToString()
                 })
                 .ToArrayAsync();
 

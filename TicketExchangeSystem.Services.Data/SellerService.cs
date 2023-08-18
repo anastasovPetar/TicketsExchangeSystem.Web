@@ -50,5 +50,31 @@
 
             return seller.Id.ToString();
         }
+
+        public async Task<bool> IsOwnerOfTicketByUserIdAsync(string userId, string ticketId)
+        {
+            var existsSeller = await dbContext
+               .Sellers
+               .FirstOrDefaultAsync(a => a.UserId.ToString() == userId);
+
+            if (existsSeller == null)
+            {
+                return false;
+            }
+            string sellerIdAsString = existsSeller.Id.ToString();
+
+            var isOwner = await dbContext
+                .Tickets
+                .Where(t => t.Id.ToString() == ticketId && t.SellerId.ToString() == sellerIdAsString)
+                //.Where(t => t.SellerId.ToString() == sellerIdAsString)
+                .FirstOrDefaultAsync();
+
+            if (isOwner == null)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }
