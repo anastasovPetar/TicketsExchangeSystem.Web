@@ -12,6 +12,7 @@
     using Microsoft.AspNetCore.Http.Extensions;
     using Microsoft.AspNetCore.Components.RenderTree;
     using Microsoft.EntityFrameworkCore;
+    using TicketsExchangeSystem.Services.Data;
 
     [Authorize]
     public class TicketController : Controller
@@ -228,38 +229,60 @@
         [HttpGet]
         public async Task<IActionResult> Edit(string id)
         {
-            bool exists = await ticketService.ExistsByIdAsync(id);
-
             TicketFormViewModel viewModel = new TicketFormViewModel() { };
 
-            if (exists)
+            bool exists = await ticketService.ExistsByIdAsync(id);
+            if (!exists)
             {
-                try
-                {
-                    viewModel = await ticketService.GetTicketForEditByIdAsync(id);
+                notyf.Error("The ticket has expired or does exists!");
 
-                    viewModel.ReturnUrl = this.UriRetursSegment();
+                return RedirectToAction("Own", "Ticket");               
+            }
 
-                }
-                catch (Exception)
-                {
-                    notyf.Error("The ticket has expired or does exists!");
+            bool isSeller = await sellerService.SellerExistsByUserIdAsync(this.User.GetId()!);
+            bool isOwner = await sellerService.IsOwnerOfTicketByUserIdAsync(this.User.GetId()!, id);
 
-                    return RedirectToAction("Index", "Home");
-                }
-            }           
+            if (!isSeller || !isOwner)
+            {
+                notyf.Error("You must be a seller to be able to sell tickets! We are going to redirect you.");
+
+                return RedirectToAction("Own", "Ticket");
+            }
+
+            
+            try
+            {
+                viewModel = await ticketService.GetTicketForEditByIdAsync(id);
+                viewModel.Categories = await categoryService.GetAllCategoriesAsync();
+                viewModel.Currencies = await currencyService.GetAllCurrenciesAsync();
+
+                viewModel.ReturnUrl = UriRetursSegment();
+
+            }
+            catch (Exception)
+            {
+                notyf.Error("The ticket has expired or does exists!");
+
+                return RedirectToAction("Own", "Ticket");
+            }
 
             return View(viewModel);
         }
 
+        //[HttpPost]
+        //public async Task<IActionResult> Edit(TicketFormViewModel model)
+        //{
+
+        //}
+
         protected  string UriRetursSegment()
         {
-            var returnURL = Request.GetTypedHeaders().Referer!.ToString();
+            string returnURL = string.Empty;
+            returnURL = Request.GetTypedHeaders().Referer!.ToString();
             Uri segmentPart = new Uri(returnURL, UriKind.Absolute);
+            string final  = string.Join("", segmentPart.Segments[2].Where(c => Char.IsLetter(c) || Char.IsWhiteSpace(c))).Trim();
 
-            return segmentPart.Segments[2];
-
-
+            return final;
         }
     }
 }

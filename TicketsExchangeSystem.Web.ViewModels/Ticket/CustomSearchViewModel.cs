@@ -31,7 +31,7 @@ namespace TicketsExchangeSystem.Web.ViewModels.Ticket
 
         public string TicketCategory { get; set; } = null!;
 
-        public string SellerId { get; set; }
+        public string? SellerId { get; set; }
 
     }
 }

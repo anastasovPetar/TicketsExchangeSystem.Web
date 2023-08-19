@@ -250,7 +250,7 @@
             var ticket = await dbContext
                 .Tickets
                 .Include(t => t.Currency)
-            .Include(t => t.Category)
+                .Include(t => t.Category)
                 .Where(t => t.isActive)
                 .FirstAsync(t => t.Id.ToString() == id);
 

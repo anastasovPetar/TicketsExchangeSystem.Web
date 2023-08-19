@@ -74,17 +74,17 @@
                         {
                             @if (isOwner)
                             {
-                                <a asp-controller="Ticket" asp-action="Edit" asp-route-id="@ticket.Id"
+                                <a asp-controller="Ticket" asp-action="Edit" asp-route-id="@ticket.Id.ToString()"
                                    class="btn btn-outline-warning mx-auto">Edit</a>
 
-                                <a asp-controller="Ticket" asp-action="Delete" asp-route-id="@ticket.Id"
+                                <a asp-controller="Ticket" asp-action="Delete" asp-route-id="@ticket.Id.ToString()"
                                    class="btn btn-outline-danger mx-auto">Delete</a>
                                 <p></p>
                             }
                         }
-                        <form class="mx-auto" asp-controller="Ticket" asp-action="Buy" asp-route-id="@ticket.Id" method="post">
+                        <form class="mx-auto" asp-controller="Ticket" asp-action="Buy" asp-route-id="@ticket.Id.ToString()" method="post">
 
-                            <input class="btn btn-outline-primary mx-auto" type="submit" value="Buy" @(ticket.Quantity == 0 ? "disabled" : "")  />
+                            <input class="btn btn-outline-primary" type="submit" value="Buy" @(ticket.Quantity == 0 ? "disabled" : "")  />
 
                         </form>
                 </div>                   
