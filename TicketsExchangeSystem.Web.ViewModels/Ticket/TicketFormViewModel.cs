@@ -61,7 +61,7 @@
         [Required(ErrorMessage ="Please enter the date and time of the event.")]
         [Display(Name = "Event date")]
         [DisplayFormat(DataFormatString = "{0:dd'/'MM'/'yyyy HH:mm}", ApplyFormatInEditMode = true)]
-        [DataType(DataType.DateTime)]
+       // [DataType(DataType.DateTime)]
         [EventDateValidate(ErrorMessage = "The date and time of the event cannot be earlier than now!")]
         public DateTime? EventDate { get; set; }
 
@@ -72,10 +72,7 @@
         public int CurrencyId { get; set; }
 
         public IEnumerable<TicketSelectCategoryFormModel> Categories { get; set; }
-        public IEnumerable<TicketSelectCurrencyFormModel> Currencies { get; set; }
-
-        public string ReturnUrl { get; set; } = null!;
-
+        public IEnumerable<TicketSelectCurrencyFormModel> Currencies { get; set; }   
 
     }
 }

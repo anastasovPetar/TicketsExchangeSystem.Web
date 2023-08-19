@@ -21,18 +21,5 @@
 
     <partial name="_ValidationScriptsPartial" model="@Model" />
 
-    <script type="text/javascript">
-        configFlatpickr = {
-            enableTime: true,
-            time_24hr: true,
-            minDate: "today",
-            dateFormat: "d.m.Y H:i"
-        }
 
-       flatpickr(".datepicker", configFlatpickr);
-
-        $('#form1').submit((e) => {
-            $('#EventDate').val(eventDateTime.latestSelectedDateObj.toLocaleString());
-        });
-    </script>
 }

@@ -14,6 +14,8 @@
     using TicketsExchangeSystem.Web.ViewModels.Ticket.Enums;
     using static TicketsEchangeSystem.Common.ValidationConstantsForEntities;
     using Ticket = TicketsExchangeSystem.Data.Models.Ticket;
+    using Microsoft.EntityFrameworkCore.Diagnostics;
+    using System.Diagnostics.Metrics;
 
     public class TicketService : ITicketService
     {
@@ -63,8 +65,8 @@
 
             var weekendStart = thisSaturday;
             var weekendEnd = thisSunday.AddHours(23).AddMinutes(59).AddSeconds(59);
-            
-           
+
+
             IEnumerable<WeekendViewModel> weekendEvents = await dbContext
                 .Tickets
                 .Where(t => t.isActive)
@@ -85,7 +87,7 @@
 
             return weekendEvents;
         }
-                
+
 
         public async Task<bool> ExistsByIdAsync(string ticketId)
         {
@@ -113,7 +115,7 @@
                 PricePerTicket = formViewModel.PricePerTicket,
                 EventDate = (DateTime)formViewModel.EventDate!,
                 CreatedOn = DateTime.Now,
-                SellerId =  Guid.Parse(sellerId!),
+                SellerId = Guid.Parse(sellerId!),
                 CurrencyId = formViewModel.CurrencyId,
                 CategoryId = formViewModel.CategoryId
             };
@@ -168,7 +170,7 @@
                     Id = t.Id.ToString(),
                     Title = t.Title,
                     Country = t.Country,
-                    City  = t.City,
+                    City = t.City,
                     PlaceOfEvent = t.PlaceOfEvent,
                     ImageUrl = (t.ImageUrl == null ? noImgPath : t.ImageUrl),
                     Quantity = t.Quantity,
@@ -221,7 +223,7 @@
         public async Task<TicketDetailsViewModel> GetDetailsByIdAsysnc(string ticketId)
         {
             Ticket ticket = await dbContext
-                .Tickets                
+                .Tickets
                 .Include(t => t.Currency)
                 .Include(t => t.Category)
                 .Where(t => t.isActive)
@@ -256,7 +258,6 @@
 
             return new TicketFormViewModel()
             {
-                
                 Title = ticket.Title,
                 Country = ticket.Country,
                 City = ticket.City,
@@ -272,5 +273,27 @@
             };
         }
 
+        public async Task EditByTicketIdAndFormModel(string id, TicketFormViewModel formViewModel)
+        {
+            Ticket ticket = await dbContext
+                .Tickets
+                .Where(t => t.isActive)
+                .FirstAsync(t => t.Id.ToString() == id);
+
+            ticket.Title = formViewModel.Title;
+            ticket.Country = formViewModel.Country;
+            ticket.City = formViewModel.City;
+            ticket.Address1 = formViewModel.Address1;
+            ticket.Address2 = formViewModel.Address2;
+            ticket.PlaceOfEvent = formViewModel.PlaceOfEvent;
+            ticket.ImageUrl = formViewModel.ImageUrl;
+            ticket.Quantity = formViewModel.Quantity;
+            ticket.EventDate = (DateTime)formViewModel.EventDate!;
+            ticket.PricePerTicket = formViewModel.PricePerTicket;
+            ticket.CurrencyId = formViewModel.CurrencyId;
+            ticket.CategoryId = formViewModel.CategoryId;
+
+            await dbContext.SaveChangesAsync();
+        }
     }
 }

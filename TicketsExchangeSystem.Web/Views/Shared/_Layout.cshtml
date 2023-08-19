@@ -62,5 +62,19 @@
 
     @await RenderSectionAsync("Scripts", required: false)
     @await Component.InvokeAsync("Notyf")
+
+    <script type="text/javascript">
+        configFlatpickr = {
+            enableTime: true,
+            time_24hr: true,
+            minDate: "today",
+            dateFormat: "d.m.Y H:i"
+        }
+
+        flatpickr(".datepicker", configFlatpickr);
+
+    </script>
+
+
 </body>
 </html>

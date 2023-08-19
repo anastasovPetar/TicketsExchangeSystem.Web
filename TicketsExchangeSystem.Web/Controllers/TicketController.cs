@@ -212,8 +212,6 @@
             {
                 viewModel = await ticketService.GetDetailsByIdAsysnc(id);
 
-                viewModel.ReturnUrl = this.UriRetursSegment();
-
             }
             catch (Exception)
             {
@@ -236,7 +234,7 @@
             {
                 notyf.Error("The ticket has expired or does exists!");
 
-                return RedirectToAction("Own", "Ticket");               
+                return RedirectToAction("Own", "Ticket");
             }
 
             bool isSeller = await sellerService.SellerExistsByUserIdAsync(this.User.GetId()!);
@@ -249,14 +247,12 @@
                 return RedirectToAction("Own", "Ticket");
             }
 
-            
+
             try
             {
                 viewModel = await ticketService.GetTicketForEditByIdAsync(id);
                 viewModel.Categories = await categoryService.GetAllCategoriesAsync();
                 viewModel.Currencies = await currencyService.GetAllCurrenciesAsync();
-
-                viewModel.ReturnUrl = UriRetursSegment();
 
             }
             catch (Exception)
@@ -269,20 +265,138 @@
             return View(viewModel);
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Edit(TicketFormViewModel model)
-        //{
-
-        //}
-
-        protected  string UriRetursSegment()
+        [HttpPost]
+        public async Task<IActionResult> Edit(string id, TicketFormViewModel model)
         {
-            string returnURL = string.Empty;
-            returnURL = Request.GetTypedHeaders().Referer!.ToString();
-            Uri segmentPart = new Uri(returnURL, UriKind.Absolute);
-            string final  = string.Join("", segmentPart.Segments[2].Where(c => Char.IsLetter(c) || Char.IsWhiteSpace(c))).Trim();
+            if (!ModelState.IsValid)
+            {
+                try
+                {
+                    model.Categories = await categoryService.GetAllCategoriesAsync();
+                    model.Currencies = await currencyService.GetAllCurrenciesAsync();
 
-            return final;
+                }
+                catch (Exception)
+                {
+                    notyf.Error("Ther is error with database connection. Please try again later.!");
+
+                    return RedirectToAction("Index", "Home");
+                }
+
+                return View(model);
+            }
+
+            bool exists;
+
+            try
+            {
+                exists = await ticketService.ExistsByIdAsync(id);
+            }
+            catch (Exception)
+            {
+                notyf.Error("Ther is error with database connection. Please try again later.!");
+
+                return RedirectToAction("Index", "Home");
+            }
+
+
+            if (!exists)
+            {
+                notyf.Error("The ticket has expired or does exists!");
+
+                return RedirectToAction("Own", "Ticket");
+            }
+
+            bool isSeller;
+            bool isOwner;
+            try
+            {
+                 isSeller = await sellerService.SellerExistsByUserIdAsync(this.User.GetId()!);
+                 isOwner = await sellerService.IsOwnerOfTicketByUserIdAsync(this.User.GetId()!, id);
+
+            }
+            catch (Exception)
+            {
+                notyf.Error("The ticket has expired or does exists!");
+
+                return RedirectToAction("Own", "Ticket");
+            }
+
+
+            if (!isSeller || !isOwner)
+            {
+                notyf.Error("You must be a seller to be able to sell tickets! We are going to redirect you.");
+
+                return RedirectToAction("Own", "Ticket");
+            }
+
+            try
+            {
+                await ticketService.EditByTicketIdAndFormModel(id, model);
+            }
+            catch (Exception)
+            {
+                notyf.Error("Unexpected error ocured while updating the ticket. Plaese try again late.");
+
+                model.Categories = await categoryService.GetAllCategoriesAsync();
+                model.Currencies = await currencyService.GetAllCurrenciesAsync();
+
+                return View(model);                
+            }
+
+            notyf.Success("The Ticked has been updated!");
+
+            return RedirectToAction("Details", "Ticket", new { id });
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(string id)
+        {
+            bool exists;
+
+            try
+            {
+                exists = await ticketService.ExistsByIdAsync(id);
+            }
+            catch (Exception)
+            {
+                notyf.Error("Ther is error with database connection. Please try again later.!");
+
+                return RedirectToAction("Index", "Home");
+            }
+
+
+            if (!exists)
+            {
+                notyf.Error("The ticket has expired or does exists!");
+
+                return RedirectToAction("Own", "Ticket");
+            }
+
+            bool isSeller;
+            bool isOwner;
+            try
+            {
+                isSeller = await sellerService.SellerExistsByUserIdAsync(this.User.GetId()!);
+                isOwner = await sellerService.IsOwnerOfTicketByUserIdAsync(this.User.GetId()!, id);
+
+            }
+            catch (Exception)
+            {
+                notyf.Error("The ticket has expired or does exists!");
+
+                return RedirectToAction("Own", "Ticket");
+            }
+
+
+            if (!isSeller || !isOwner)
+            {
+                notyf.Error("You must be a seller to be able to sell tickets! We are going to redirect you.");
+
+                return RedirectToAction("Own", "Ticket");
+            }
+        }
+
+
     }
 }

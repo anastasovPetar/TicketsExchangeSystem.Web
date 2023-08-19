@@ -43,40 +43,28 @@
             <div class="form-inline">
                 <form class="mx-auto my-2" asp-controller="Ticket" asp-action="Buy" asp-route-id="@Model.Id.ToString()" method="post">
 
-                    <input class="btn btn-outline-primary mx-auto" type="submit" value=" Buy " style="width:190px" @(Model.Quantity == 0 ? "disabled" : "") />
+                    <input class="btn btn-outline-primary mx-auto" type="submit" value=" Buy " style="width:180px" @(Model.Quantity == 0 ? "disabled" : "") />
 
                 </form>
-
-                @if (this.User?.Identity?.IsAuthenticated ?? false)
-                {
-                    @if (isOwner)
+                <div class="btn-group ">
+                    @if (this.User?.Identity?.IsAuthenticated ?? false)
                     {
-                        <a class="btn btn-outline-warning mx-auto" asp-controller="Ticket" asp-action="Edit"
-                           asp-route-id="@Model.Id.ToString()">Edit</a>
+                        @if (isOwner)
+                        {
+                            <a class="btn btn-outline-warning mx-auto" asp-controller="Ticket" asp-action="Edit"
+                               asp-route-id="@Model.Id.ToString()">Edit</a>
 
-                        <a class="ml-2 btn btn-outline-danger mx-auto" asp-controller="Ticket" asp-action="Delete"
-                           asp-route-id="@Model.Id.ToString()">Delete</a>
+                            <a class="ml-2 btn btn-outline-danger mx-auto" asp-controller="Ticket" asp-action="Delete"
+                               asp-route-id="@Model.Id.ToString()">Delete</a>
+                        }
                     }
-                }
 
+                    <a class="btn btn-outline-success mx-auto" onclick="history.go(-1);">Back</a>   @*asp-controller="Ticket" asp-action="@Model.ReturnUrl"*@
+                </div>
 
-                <a class="btn btn-outline-success mx-auto" asp-controller="Ticket" asp-action="@Model.ReturnUrl">Back</a>
             </div>
             <p></p>
         </div>
-
-
-        <div class="form-inline">    
-
-           @* <form class="" asp-controller="Ticket" asp-action="Buy" asp-route-id="@Model.Id.ToString()" method="post">
-
-                <input class="btn btn-outline-primary mx-auto" type="submit" value="Buy" @(Model.Quantity == 0 ? "disabled" : "") />
-
-            </form>*@
-        </div>
-
-
-
     </div>
 </div>
 
