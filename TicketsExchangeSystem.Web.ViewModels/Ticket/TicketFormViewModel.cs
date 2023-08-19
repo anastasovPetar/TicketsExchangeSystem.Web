@@ -16,6 +16,7 @@
             Currencies = new HashSet<TicketSelectCurrencyFormModel>();
         }
 
+        //public string ticketId { get; }
         [Required]
         [StringLength(TitleMaxLength, MinimumLength = TitleMinLength)]
         public string Title { get; set; } = null!;

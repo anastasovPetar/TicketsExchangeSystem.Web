@@ -14,8 +14,6 @@
     using TicketsExchangeSystem.Web.ViewModels.Ticket.Enums;
     using static TicketsEchangeSystem.Common.ValidationConstantsForEntities;
     using Ticket = TicketsExchangeSystem.Data.Models.Ticket;
-    using Microsoft.EntityFrameworkCore.Diagnostics;
-    using System.Diagnostics.Metrics;
 
     public class TicketService : ITicketService
     {
@@ -120,8 +118,8 @@
                 CategoryId = formViewModel.CategoryId
             };
 
-            await dbContext.Tickets.AddAsync(ticket);
-            await dbContext.SaveChangesAsync();
+             await dbContext.Tickets.AddAsync(ticket);            
+             await dbContext.SaveChangesAsync();
         }
 
         public async Task<CustomSearchedAndPaginatedServiceModel> GetAllAsync(CustomTicketQueryModel queryModel)
@@ -294,6 +292,39 @@
             ticket.CategoryId = formViewModel.CategoryId;
 
             await dbContext.SaveChangesAsync();
+        }
+
+        public async Task<TicketDeleteViewModel> GetTicketForDeleteByIdAsync(string id)
+        {
+            Ticket ticket = await dbContext.
+                Tickets
+                .Where(t => t.isActive)
+                .FirstAsync(t => t.Id.ToString() == id);
+
+            return new TicketDeleteViewModel 
+            {
+                Id = ticket.Id.ToString(),
+                Title = ticket.Title,
+                Country = ticket.Country,
+                City = ticket.City,
+                ImageUrl = (ticket.ImageUrl == null ? noImgPath : ticket.ImageUrl),
+                PlaceOfEvent = ticket.PlaceOfEvent
+            };
+        }
+
+        public async Task<bool> SoftDeleteByIdAsync(string id, TicketDeleteViewModel model)
+        {
+            Ticket ticket = await dbContext
+                .Tickets
+                .Where(t => t.isActive)
+                .FirstAsync(t => t.Id.ToString() == id);
+
+
+            ticket.isActive = false;
+
+            await dbContext.SaveChangesAsync();
+
+            return true;
         }
     }
 }

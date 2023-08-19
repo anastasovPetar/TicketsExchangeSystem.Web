@@ -15,5 +15,7 @@
         Task<IEnumerable<CustomSearchViewModel>> GetFavoritesBeUserIdAsync(string userId);
         Task<TicketFormViewModel> GetTicketForEditByIdAsync(string id);
         Task EditByTicketIdAndFormModel(string id,  TicketFormViewModel formViewModel);
+        Task<TicketDeleteViewModel> GetTicketForDeleteByIdAsync(string id);
+        Task<bool> SoftDeleteByIdAsync(string id, TicketDeleteViewModel model);
     }
 }

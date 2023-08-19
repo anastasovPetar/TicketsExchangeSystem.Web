@@ -162,12 +162,13 @@
                 }
             }
 
+            //string newId; // = string.Empty;
             try
             {
                 string? sellerId = await sellerService.GetRegisteredSellerIdFromUserIdAsync(User.GetId()!);
                 await ticketService.CreateAsync(model, sellerId!);
 
-                notyf.Success("The ticket has been successfully created!");
+                
             }
             catch (Exception)
             {
@@ -178,7 +179,13 @@
                 return View(model);
             }
 
-            return RedirectToAction("Details", "Ticket");
+            //if (newId == string.Empty)
+            //{
+            //    notyf.Error("Unexpected error during the creation of the ticket!");
+            //}
+
+            notyf.Success("The ticket has been successfully created!");
+            return RedirectToAction("Own", "Ticket") ;
         }
 
         [HttpGet]
@@ -311,13 +318,13 @@
             bool isOwner;
             try
             {
-                 isSeller = await sellerService.SellerExistsByUserIdAsync(this.User.GetId()!);
-                 isOwner = await sellerService.IsOwnerOfTicketByUserIdAsync(this.User.GetId()!, id);
+                isSeller = await sellerService.SellerExistsByUserIdAsync(this.User.GetId()!);
+                isOwner = await sellerService.IsOwnerOfTicketByUserIdAsync(this.User.GetId()!, id);
 
             }
             catch (Exception)
             {
-                notyf.Error("The ticket has expired or does exists!");
+                notyf.Error("Wrong ticket or owner!");
 
                 return RedirectToAction("Own", "Ticket");
             }
@@ -341,13 +348,14 @@
                 model.Categories = await categoryService.GetAllCategoriesAsync();
                 model.Currencies = await currencyService.GetAllCurrenciesAsync();
 
-                return View(model);                
+                return View(model);
             }
 
             notyf.Success("The Ticked has been updated!");
 
-            return RedirectToAction("Details", "Ticket", new { id });
+            return RedirectToAction("Own", "Ticket", new { id });
         }
+
 
         [HttpGet]
         public async Task<IActionResult> Delete(string id)
@@ -383,7 +391,7 @@
             }
             catch (Exception)
             {
-                notyf.Error("The ticket has expired or does exists!");
+                notyf.Error("Wrong ticket or owner!");
 
                 return RedirectToAction("Own", "Ticket");
             }
@@ -395,8 +403,80 @@
 
                 return RedirectToAction("Own", "Ticket");
             }
+
+            TicketDeleteViewModel model = new TicketDeleteViewModel();
+            try
+            {
+                model = await ticketService.GetTicketForDeleteByIdAsync(id);
+                return View(model);
+            }
+            catch (Exception)
+            {
+                notyf.Error("Unexpected connection error occurred. Try again later");
+
+                return RedirectToAction("Own", "Ticket");
+            }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Delete(string id, TicketDeleteViewModel model)
+        {
+            bool exists;
 
+            try
+            {
+                exists = await ticketService.ExistsByIdAsync(id);
+            }
+            catch (Exception)
+            {
+                notyf.Error("Ther is error with database connection. Please try again later.!");
+
+                return RedirectToAction("Index", "Home");
+            }
+
+
+            if (!exists)
+            {
+                notyf.Error("The ticket has expired or does exists!");
+
+                return RedirectToAction("Own", "Ticket");
+            }
+
+            bool isSeller;
+            bool isOwner;
+            try
+            {
+                isSeller = await sellerService.SellerExistsByUserIdAsync(this.User.GetId()!);
+                isOwner = await sellerService.IsOwnerOfTicketByUserIdAsync(this.User.GetId()!, id);
+
+            }
+            catch (Exception)
+            {
+                notyf.Error("Wrong ticket or owner!");
+
+                return RedirectToAction("Own", "Ticket");
+            }
+
+
+            if (!isSeller || !isOwner)
+            {
+                notyf.Error("You must be a seller to be able to sell tickets! We are going to redirect you.");
+
+                return RedirectToAction("Own", "Ticket");
+            }
+
+            bool softdeleteSuccess = await ticketService.SoftDeleteByIdAsync(id, model);
+
+            if (softdeleteSuccess)
+            {
+                notyf.Success("Success! The ticket has been deleted.");
+            }
+            else
+            {
+                notyf.Error("An Error occured during dele of your ticket.");
+            }
+
+            return RedirectToAction("Own", "Ticket");
+        }
     }
 }

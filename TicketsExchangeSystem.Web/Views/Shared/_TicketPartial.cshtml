@@ -12,12 +12,12 @@
 
 
 <div class="col-md-4">
-    <div class="card  mb-3 shadow-lg border-bottom border-danger" >
+    <div class="card  mb-3 shadow-lg border-bottom border-danger">
         <img class="card-img-top" src="@Model.ImageUrl" alt="Ticket image">
         <div class="card-body text-center">
             <h4 class="my-3">@Model.Title</h4>
-            <h6 class="my-3"> 
-                <i class="bi bi-geo-alt-fill me-2"></i> 
+            <h6 class="my-3">
+                <i class="bi bi-geo-alt-fill me-2"></i>
                 Place: <b>@Model.Country</b>, <b>@Model.City</b>, <b>@Model.PlaceOfEvent</b>
             </h6>
             <h6 class="my-2">
@@ -37,7 +37,7 @@
                 Price: @Model.PricePerTicket <b>@Model.TicketCurrency</b>
             </h6>
             <br />
-           
+
         </div>
         <div class="card-footer text-center">
             <a asp-controller="Ticket" asp-action="Details" asp-route-id="@Model.Id"
@@ -45,7 +45,7 @@
 
             @if (this.User.Identity?.IsAuthenticated ?? false)
             {
-                @if (isOwner) //send id
+                @if (isOwner) 
                 {
                     <a asp-controller="Ticket" asp-action="Edit" asp-route-id="@Model.Id.ToString()"
                        class="btn btn-outline-warning">Edit</a>
@@ -53,14 +53,17 @@
                     <a asp-controller="Ticket" asp-action="Delete" asp-route-id="@Model.Id"
                        class="btn btn-outline-danger">Delete</a>
                     <p></p>
+                }else
+                {
+                    <form class="input-group-sm my-3" asp-controller="Ticket" asp-action="Buy" asp-route-id="@Model.Id.ToString()" method="post">
+
+                        <input class="btn btn-outline-primary" type="submit" value="Buy" @(Model.Quantity == 0 ? "disabled" : "") />
+
+                    </form>
                 }
             }
-
-            <form class="input-group-sm my-3" asp-controller="Ticket" asp-action="Buy" asp-route-id="@Model.Id.ToString()" method="post">
-
-                <input class="btn btn-outline-primary" type="submit" value="Buy" @(Model.Quantity == 0 ? "disabled" : "") />
-
-            </form>
+            
+            
         </div>
     </div>
 </div>
