@@ -41,11 +41,15 @@
             <p>Available: <b>(@(Model.Quantity > 0 ? $"{@Model.Quantity} ticket/s" : "Оut of stock"))</b></p>
 
             <div class="form-inline">
-                <form class="mx-auto my-2" asp-controller="Ticket" asp-action="Buy" asp-route-id="@Model.Id.ToString()" method="post">
+                @if (!isOwner)
+                {
+                    <form class="mx-auto my-2" asp-controller="Ticket" asp-action="Buy" asp-route-id="@Model.Id.ToString()" method="post">
 
-                    <input class="btn btn-outline-primary mx-auto" type="submit" value=" Buy " style="width:180px" @(Model.Quantity == 0 ? "disabled" : "") />
+                        <input class="btn btn-outline-primary mx-auto" type="submit" value=" Buy " style="width:180px" @(Model.Quantity == 0 ? "disabled" : "") />
 
-                </form>
+                    </form>
+                }
+                
                 <div class="btn-group ">
                     @if (this.User?.Identity?.IsAuthenticated ?? false)
                     {
