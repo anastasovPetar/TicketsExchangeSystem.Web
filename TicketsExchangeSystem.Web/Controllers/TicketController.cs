@@ -9,6 +9,9 @@
     using ViewModels.Ticket;
     using TicketsExchangeSystem.Services.Data.Models.Ticket;
     using TicketsExchangeSystem.Data.Models;
+    using Microsoft.AspNetCore.Http.Extensions;
+    using Microsoft.AspNetCore.Components.RenderTree;
+    using Microsoft.EntityFrameworkCore;
 
     [Authorize]
     public class TicketController : Controller
@@ -207,15 +210,55 @@
             try
             {
                 viewModel = await ticketService.GetDetailsByIdAsysnc(id);
+
+                viewModel.ReturnUrl = this.UriRetursSegment();
+
             }
             catch (Exception)
             {
                 notyf.Error("The ticket does not exists!");
 
                 return RedirectToAction("Index", "Home");
-            }            
+            }
 
             return View(viewModel);
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(string id)
+        {
+            bool exists = await ticketService.ExistsByIdAsync(id);
+
+            TicketDetailsViewModel viewModel = new TicketDetailsViewModel() { };
+            if (exists)
+            {
+                try
+                {
+                    viewModel = await ticketService.GetDetailsByIdAsysnc(id);
+
+                    viewModel.ReturnUrl = this.UriRetursSegment();
+
+                }
+                catch (Exception)
+                {
+                    notyf.Error("The ticket has expired or does exists!");
+
+                    return RedirectToAction("Index", "Home");
+                }
+            }           
+
+            return View(viewModel);
+        }
+
+        protected  string UriRetursSegment()
+        {
+            var returnURL = Request.GetTypedHeaders().Referer!.ToString();
+            Uri segmentPart = new Uri(returnURL, UriKind.Absolute);
+
+            return segmentPart.Segments[2];
+
+
         }
     }
 }

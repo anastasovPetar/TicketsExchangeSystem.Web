@@ -36,15 +36,13 @@
             <div class="form-inline">
                 @if (this.User?.Identity?.IsAuthenticated ?? false)
                 {
-                    <a class="btn btn-outline-warning" asp-controller="House" asp-action="Edit"
+                    <a class="btn btn-outline-warning mx-auto" asp-controller="Ticket" asp-action="Edit"
                        asp-route-id="@Model.Id">Edit</a>
 
-                    <a class="ml-2 btn btn-outline-danger" asp-controller="House" asp-action="Delete"
-                       asp-route-id="@Model.Id">Delete</a>
-
-                    <a class="ml-2 btn btn-outline-success" asp-controller="Ticket" asp-action="Custom">Back</a>         
-                  
+                    <a class="ml-2 btn btn-outline-danger mx-auto" asp-controller="Ticket" asp-action="Delete"
+                       asp-route-id="@Model.Id">Delete</a>                       
                 }
+                <a class="ml-2 btn btn-outline-success mx-auto" asp-controller="Ticket" asp-action="@Model.ReturnUrl">Back</a>
             </div>
             <p></p>
         </div>

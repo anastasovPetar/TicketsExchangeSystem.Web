@@ -18,5 +18,7 @@
         public string? ImageUrl { get; set; }
 
         public DateTime EventDate { get; set; }
+
+        public int Quantity { get; set; }
     }
 }

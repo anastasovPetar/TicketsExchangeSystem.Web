@@ -13,5 +13,6 @@
         Task<CustomSearchedAndPaginatedServiceModel> GetAllAsync(CustomTicketQueryModel queryModel);
         Task<IEnumerable<CustomSearchViewModel>> GetAllBySellerIdAsync(string sellerId);
         Task<IEnumerable<CustomSearchViewModel>> GetFavoritesBeUserIdAsync(string userId);
+        Task<TicketFormViewModel> GetTicketForEditByIdAsync(string id);
     }
 }

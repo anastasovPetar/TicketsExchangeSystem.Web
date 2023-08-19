@@ -6,6 +6,7 @@
 
         public string? Addres2 { get; set; }
 
-        public string TicketCategory { get; set; } = null!;      
+
+        public string ReturnUrl { get; set; } = null!;
     }
 }

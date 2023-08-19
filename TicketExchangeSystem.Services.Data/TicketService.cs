@@ -12,6 +12,8 @@
     using TicketsExchangeSystem.Web.ViewModels.Ticket;
     using TicketsExchangeSystem.Services.Data.Models.Ticket;
     using TicketsExchangeSystem.Web.ViewModels.Ticket.Enums;
+    using static TicketsEchangeSystem.Common.ValidationConstantsForEntities;
+    using Ticket = TicketsExchangeSystem.Data.Models.Ticket;
 
     public class TicketService : ITicketService
     {
@@ -23,7 +25,7 @@
         {
             this.dbContext = dbContext;
             this.dateService = dateService;
-            this.dtNow = DateTime.Now;
+            dtNow = DateTime.Now;
         }
 
 
@@ -34,7 +36,6 @@
                 .Tickets
                 .Where(t => t.isActive)
                 .Where(t => t.EventDate.Date == DateTime.Now.Date && t.EventDate > dtNow)
-
                 .Select(t => new TodayViewModel()
                 {
                     Id = t.Id.ToString(),
@@ -44,6 +45,7 @@
                     PlaceOfEvent = t.PlaceOfEvent,
                     ImageUrl = (t.ImageUrl == null ? noImgPath : t.ImageUrl),
                     EventDate = t.EventDate,
+                    Quantity = t.Quantity
                     //Price = t.PricePerTicket,
                     //CurencyName = t.CurrencyName,
                 })
@@ -76,6 +78,7 @@
                     PlaceOfEvent = t.PlaceOfEvent,
                     ImageUrl = (t.ImageUrl == null ? noImgPath : t.ImageUrl),
                     EventDate = t.EventDate,
+                    Quantity = t.Quantity
                 })
                  .ToListAsync();
 
@@ -190,6 +193,7 @@
         {
             IEnumerable<CustomSearchViewModel> allSellersTickets = await dbContext
                 .Tickets
+                .Where(t => t.isActive)
                 .Where(t => t.SellerId.ToString() == sellerid)
                 .Select(t => new CustomSearchViewModel
                 {
@@ -240,5 +244,33 @@
                 TicketCategory = ticket.Category.Name
             };
         }
+
+        public async Task<TicketFormViewModel> GetTicketForEditByIdAsync(string id)
+        {
+            var ticket = await dbContext
+                .Tickets
+                .Include(t => t.Currency)
+            .Include(t => t.Category)
+                .Where(t => t.isActive)
+                .FirstAsync(t => t.Id.ToString() == id);
+
+            return new TicketFormViewModel()
+            {
+                
+                Title = ticket.Title,
+                Country = ticket.Country,
+                City = ticket.City,
+                Address1 = ticket.Address1,
+                Address2 = ticket.Address2,
+                PlaceOfEvent = ticket.PlaceOfEvent,
+                ImageUrl = (ticket.ImageUrl == null ? noImgPath : ticket.ImageUrl),
+                Quantity = ticket.Quantity,
+                EventDate = ticket.EventDate,
+                PricePerTicket = ticket.PricePerTicket,
+                CurrencyId = ticket.CurrencyId,
+                CategoryId = ticket.CategoryId
+            };
+        }
+
     }
 }
