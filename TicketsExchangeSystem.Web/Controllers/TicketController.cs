@@ -230,12 +230,13 @@
         {
             bool exists = await ticketService.ExistsByIdAsync(id);
 
-            TicketDetailsViewModel viewModel = new TicketDetailsViewModel() { };
+            TicketFormViewModel viewModel = new TicketFormViewModel() { };
+
             if (exists)
             {
                 try
                 {
-                    viewModel = await ticketService.GetDetailsByIdAsysnc(id);
+                    viewModel = await ticketService.GetTicketForEditByIdAsync(id);
 
                     viewModel.ReturnUrl = this.UriRetursSegment();
 

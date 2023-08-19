@@ -74,6 +74,8 @@
         public IEnumerable<TicketSelectCategoryFormModel> Categories { get; set; }
         public IEnumerable<TicketSelectCurrencyFormModel> Currencies { get; set; }
 
+        public string ReturnUrl { get; set; }
+
 
     }
 }
