@@ -11,6 +11,7 @@ namespace TicketsExchangeSystem.Web
     using AspNetCoreHero.ToastNotification.Extensions;
     using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
     using TicketsExchangeSystem.Web.Infrastructure.ModelBinders;
+    using Microsoft.AspNetCore.Mvc;
 
     public class Program
     {
@@ -48,6 +49,7 @@ namespace TicketsExchangeSystem.Web
                 .AddMvcOptions(options =>
                 {
                     options.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
+                    options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                 });
 
             builder.Services.AddScoped<ITicketService, TicketService>();
