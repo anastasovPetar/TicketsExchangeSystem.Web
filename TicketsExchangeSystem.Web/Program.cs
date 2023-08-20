@@ -52,6 +52,17 @@ namespace TicketsExchangeSystem.Web
                     options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                 });
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    policy =>
+                    {
+                        policy.WithOrigins("https://localhost:7122/",
+                                            "https://localhost:7122");
+                    });
+            });
+
+
             builder.Services.AddScoped<ITicketService, TicketService>();
             builder.Services.AddScoped<IDateService, DateService>();
             builder.Services.AddScoped<ISellerService, SellerService>();
@@ -76,6 +87,8 @@ namespace TicketsExchangeSystem.Web
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            //app.UseCors();
 
             app.UseAuthentication();
             app.UseAuthorization();
